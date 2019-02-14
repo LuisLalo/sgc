@@ -1,0 +1,42 @@
+create table usuarios (
+num_empleado int primary key not null,
+nombre varchar(40) not null,
+apellido varchar(40) not null,
+rol int not null,
+correo varchar(100) not null,
+contraseña varchar(50) not null,
+puesto int not null,
+estatus int not null
+)
+
+create table rol (
+id_rol int primary key not null,
+nombre varchar(40) not null
+)
+
+create table puesto (
+id_puesto int primary key not null,
+nombre varchar(40) not null,
+departamento varchar(80) not null
+)
+
+CREATE TABLE acciones_correctivas(
+	id_accion int NOT NULL,
+	proviene_de varchar(50) NOT NULL,
+	fecha datetime NOT NULL,
+	numero_auditoria int NOT NULL,
+	tipo_auditoria varchar(50) NOT NULL,
+	observacion_norma varchar(50) NOT NULL,
+	descripcion varchar(50) NOT NULL,
+	departamento varchar(50) NOT NULL,
+	responsable_solventar varchar(50) NOT NULL,
+	responsable_verificar varchar(50) NOT NULL,
+	causa_raiz varchar(50) NOT NULL,
+	descripcion_causa_raiz varchar(50) NOT NULL,
+	accion_correctiva varchar(50) NOT NULL,
+	fecha_aplicacion datetime NOT NULL,
+	estatus varchar(50) NOT NULL,
+	resultado varchar(50) NOT NULL,
+	numero_accion int NOT NULL
+ )
+

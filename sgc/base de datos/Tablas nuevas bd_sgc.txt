@@ -1,0 +1,136 @@
+CREATE TABLE `observacion_norma` (
+   `id_observacion_norma` int(11) NULL,
+   `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `descripcion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+insert into observacion_norma values(1, 'No Conformidad', 'No Conformidad');
+insert into observacion_norma values(2, 'Observación', 'Observación');
+
+insert into tipo_documento values(6, 'Análisis de Riesgo','Análisis de Riesgo', 'analisis_riesgo','');
+insert into tipo_documento values(7, 'Análisis FODA','Análisis FODA','analisis_foda','');
+
+CREATE TABLE `proyecto_mejora` (
+   `id_proyecto` int(11) NOT NULL AUTO_INCREMENT,
+   `numero_proyecto` int(11) DEFAULT NULL,
+   `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `area_aplicacion` int(11) DEFAULT NULL,
+   `proviene_de` int(11) DEFAULT NULL,
+   `tipo_proyecto` int(11) DEFAULT NULL,
+   `situacion_actual` varchar(300) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `situacion_deseada` varchar(300) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `fecha_creacion` datetime DEFAULT NULL,
+   `fecha_terminacion` datetime DEFAULT NULL,
+   `area_responsable` int(11) DEFAULT NULL,
+   `responsable` int(11) DEFAULT NULL,
+   `tecnica` varchar(200) DEFAULT NULL,
+   `recurso` varchar(200) DEFAULT NULL,
+   `resultado` varchar(200) DEFAULT NULL,
+   PRIMARY KEY (`id_proyecto`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+
+NUEVA TABLA ACCION CORRECTIVA
+CREATE TABLE `accion_correctiva` (
+   `id_accion` int(11) NOT NULL AUTO_INCREMENT,
+   `proviene_de` int(11) DEFAULT NULL,
+   `fecha` datetime DEFAULT NULL,
+   `numero_auditoria` int(11) DEFAULT NULL,
+   `tipo_auditoria` int(11) DEFAULT NULL,
+   `observacion_norma` int(11) DEFAULT NULL,
+   `elemento` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `descripcion` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `departamento` int(11) DEFAULT NULL,
+   `responsable_solventar` int(11) DEFAULT NULL,
+   `responsable_verificar` int(11) DEFAULT NULL,
+   `causa_raiz` int(11) DEFAULT NULL,
+   `descripcion_causa_raiz` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `accion_correctiva` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `fecha_aplicacion` datetime DEFAULT NULL,
+   `id_estatus_accion` int(11) DEFAULT NULL,
+   `evaluacion` int(11) DEFAULT NULL,
+   `resultado` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `numero_accion` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id_accion`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+NUEVA TABLA EVALUACION
+CREATE TABLE `evaluacion` (
+   `id_evaluacion` int(11) DEFAULT NULL,
+   `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `descripcion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL
+ ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+
+insert into evaluacion values(1, 'Si','Si');
+insert into evaluacion values(2, 'No','No');
+
+NUEVA TABLA  ACTIVIDAD_ACCION
+CREATE TABLE `actividad_accion` (
+   `id_actividad` int(11) NOT NULL AUTO_INCREMENT,
+   `fecha_estimada` datetime DEFAULT NULL,
+   `fecha_real` datetime DEFAULT NULL,
+   `porcentaje_avance` int(11) DEFAULT NULL,
+   `descripcion` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `id_proyecto` int(11) DEFAULT NULL,
+   `responsable` int(11) DEFAULT NULL,
+   `accion_proyecto` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id_actividad`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+
+NUEVA TABLA  ACTIVIDAD_ACCION
+CREATE TABLE `actividad_accion` (
+   `id_actividad` int(11) NOT NULL AUTO_INCREMENT,
+   `fecha_estimada` datetime DEFAULT NULL,
+   `fecha_real` datetime DEFAULT NULL,
+   `porcentaje_avance` int(11) DEFAULT NULL,
+   `descripcion` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `id_proyecto` int(11) DEFAULT NULL,
+   `num_empleado` int(11) DEFAULT NULL,
+   `accion_proyecto` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id_actividad`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+
+NUEVA TABLA  PROYECTO_MEJORA
+CREATE TABLE `proyecto_mejora` (
+   `id_proyecto` int(11) NOT NULL AUTO_INCREMENT,
+   `numero_proyecto` int(11) DEFAULT NULL,
+   `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `area_aplicacion` int(11) DEFAULT NULL,
+   `proviene_de` int(11) DEFAULT NULL,
+   `tipo_proyecto` int(11) DEFAULT NULL,
+   `situacion_actual` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `situacion_deseada` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `fecha_creacion` datetime DEFAULT NULL,
+   `fecha_terminacion` datetime DEFAULT NULL,
+   `departamento` int(11) DEFAULT NULL,
+   `num_empleado` int(11) DEFAULT NULL,
+   `tecnica` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `recurso` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `resultado` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   PRIMARY KEY (`id_proyecto`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+
+NUEVA TABLA  ACTIVIDAD_ACCION(29-08-2018)
+CREATE TABLE `actividad_accion` (
+   `id_actividad` int(11) NOT NULL AUTO_INCREMENT,
+   `fecha_estimada` datetime DEFAULT NULL,
+   `fecha_real` datetime DEFAULT NULL,
+   `porcentaje_avance` int(11) DEFAULT NULL,
+   `descripcion` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+   `id_proyecto` int(11) DEFAULT NULL,
+   `num_empleado` int(11) DEFAULT NULL,
+   `id_accion` int(11) DEFAULT NULL,
+   PRIMARY KEY (`id_actividad`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+AGREGAR COLUMNA PARA IMAGEN EN TABLA DOCUMENTO
+alter table departamento
+add column imagen varchar(50)after nomenclatura;
+
+
+NUEVA TABLA ACCION CORRECTIVA
+CREATE TABLE `accion_correctiva` (   `id_accion` int(11) NOT NULL AUTO_INCREMENT,   `proviene_de` int(11) DEFAULT NULL,   `fecha` datetime DEFAULT NULL,   `numero_auditoria` int(11) DEFAULT NULL,   `tipo_auditoria` int(11) DEFAULT NULL,   `observacion_norma` int(11) DEFAULT NULL,   `elemento` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,   `descripcion` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `departamento` int(11) DEFAULT NULL,   `responsable_solventar` int(11) DEFAULT NULL,   `responsable_verificar` int(11) DEFAULT NULL,   `causa_mano` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `causa_medio` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `causa_material` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `causa_metodo` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `causa_maquinaria` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `causa_analisis` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `accion_correctiva` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,   `fecha_aplicacion` datetime DEFAULT NULL,   `id_estatus_accion` int(11) DEFAULT NULL,   `evaluacion` int(11) DEFAULT NULL,   `resultado` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,   `numero_accion` int(11) DEFAULT NULL,   PRIMARY KEY (`id_accion`) ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/security 
+     http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<http auto-config="true">
+		
+		<intercept-url pattern="/" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/perfil/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/programa_actividades/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/reunion_directiva/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/auditoria_interna/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/auditoria_external/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/reunion_trabajo/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/politica/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/manual/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/gestion_conocimiento/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/procedimientos/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/instructivos/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/formatos/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/documentos_varios/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/documentos/*" access="hasAnyAuthority('SGC','Area')"/>
+		<intercept-url pattern="/accion_correctiva/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/analisis_riesgo/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/analisis_foda/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/plan_accion/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/proyecto_mejora/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/tablero_resultados/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/actualizacion_indicador/*" access="hasAnyAuthority('SGC','Area')"/>
+		<intercept-url pattern="/nuevo_indicador/*" access="hasAnyAuthority('SGC','Area')"/>
+		<intercept-url pattern="/historial/*" access="hasAnyAuthority('SGC','Area','Usuario','Interno','Externo')"/>
+		<intercept-url pattern="/mensajes/*" access="hasAnyAuthority('SGC','Area','Usuario')"/>
+		<intercept-url pattern="/Usuarios/*" access="hasAnyAuthority('SGC')"/>
+		<intercept-url pattern="/linea-autorizacion/*" access="hasAnyAuthority('SGC')"/>
+		<intercept-url pattern="/menu/*" access="hasAnyAuthority('SGC')"/>
+		<intercept-url pattern="/capacitacion/*" access="hasAnyAuthority('SGC')"/>
+		<intercept-url pattern="/convocatoria/*" access="hasAnyAuthority('SGC')"/>
+		<form-login login-page="/login" />
+	</http>
+	<!-- 
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="luis" password="{noop}luis123" authorities="SGC" />
+				<user name="marisol" password="{noop}mari123" authorities="Area" />
+				<user name="abel" password="{noop}abel123" authorities="Usuario" />
+				<user name="andres" password="{noop}andres123" authorities="Interno" />
+				<user name="manuel" password="{noop}manuel123" authorities="Externo" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+ -->
+ 	<!--  Autenticación desde una base de datos --> 
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="bcrypt" />
+			<jdbc-user-service data-source-ref="dataSource"
+			users-by-username-query="select correo, contrasena, id_estatus, nombres, apellidos, num_empleado, id_puesto, id_rol, id_departamento from usuario where correo = ? "
+			authorities-by-username-query="select a.correo, b.nombre, b.id_rol from usuario a, rol b where a.id_rol=b.id_rol and a.correo = ? " />
+		</authentication-provider>
+	</authentication-manager>
+</b:beans>
