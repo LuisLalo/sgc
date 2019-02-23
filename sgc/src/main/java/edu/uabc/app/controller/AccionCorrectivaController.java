@@ -26,22 +26,26 @@ import edu.uabc.app.model.ActividadAccion;
 import edu.uabc.app.model.ActividadAccionConsulta;
 import edu.uabc.app.model.CausaRaiz;
 import edu.uabc.app.model.Departamento;
+import edu.uabc.app.model.DocumentoConsulta;
 import edu.uabc.app.model.EstatusAccion;
 import edu.uabc.app.model.Evaluacion;
 import edu.uabc.app.model.ObservacionNorma;
 import edu.uabc.app.model.ProvieneDe;
 import edu.uabc.app.model.TipoAuditoria;
+import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IAccionesCorrectivasService;
 import edu.uabc.app.service.IActividadAccionConsultaService;
 import edu.uabc.app.service.IActividadAccionService;
 import edu.uabc.app.service.ICausaRaizService;
 import edu.uabc.app.service.IDepartamentosService;
+import edu.uabc.app.service.IDocumentosConsultaService;
 import edu.uabc.app.service.IEstatusAccionService;
 import edu.uabc.app.service.IEvaluacionService;
 import edu.uabc.app.service.IObservacionNormaService;
 import edu.uabc.app.service.IProvieneDeService;
 import edu.uabc.app.service.ITiposAuditoriaService;
+import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 
 @Controller
@@ -81,15 +85,25 @@ public class AccionCorrectivaController {
 	@Autowired
 	private IActividadAccionConsultaService serviceActividadAccionConsulta;
 	
+	@Autowired
+	ITiposDocumentosService serviceTiposDocumentos;
+	
+	@Autowired
+	private IDocumentosConsultaService serviceDocumentosConsulta;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
-		
+		/*
 		List<AccionCorrectiva>listaAccionCorrectiva = serviceAccionesCorrectivas.buscarTodas();
 		System.out.println("Accion correctiva: " + listaAccionCorrectiva);
-		model.addAttribute("accionCorrectiva", listaAccionCorrectiva);
+		model.addAttribute("accionCorrectiva", listaAccionCorrectiva);*/
+		
+		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
+		model.addAttribute("departamentos", listaDepartamento);
+		
 		return "accion_correctiva/listAccionCorrectiva";
 	}
 	
@@ -222,5 +236,19 @@ public class AccionCorrectivaController {
 		return "redirect:/accion_correctiva/index";
 	}
 	
-	
+	@GetMapping("/{id}")
+	public String mostrar(@PathVariable ("id") int idDepartamento, Model model, Authentication authentication) {
+		//Se agrega el nombre del usuario
+		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		Departamento departamento = serviceDepartamentos.buscarPorId(idDepartamento);
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Acción Correctiva");
+		
+		List<DocumentoConsulta> listaDocumento = serviceDocumentosConsulta.buscarPorEstatusAndDepartamentoAndTipoDocumento(100, departamento, tipoDocumento);
+		model.addAttribute("departamentos", departamento);
+		model.addAttribute("documentos", listaDocumento);
+		
+		return "/accion_correctiva/listAccionCorrectivaDepartamentos";
+	}
 }

@@ -69,7 +69,7 @@ public class AnalisisFodaController {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
-		
+		/*
 		List<Departamento> listaDepartamentos = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamentos);
 		
@@ -77,6 +77,10 @@ public class AnalisisFodaController {
 		System.out.println("Usuario listaUsuarioDocumentoConsulta: " + listaDocumento);
 
 		model.addAttribute("documentos", listaDocumento);
+		*/
+		
+		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
+		model.addAttribute("departamentos", listaDepartamento);
 		
 		return "analisis_foda/listAnalisisFoda";
 	}

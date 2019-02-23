@@ -16,6 +16,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,15 +24,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.uabc.app.model.ActividadAccion;
 import edu.uabc.app.model.ActividadAccionConsulta;
 import edu.uabc.app.model.Departamento;
+import edu.uabc.app.model.DocumentoConsulta;
 import edu.uabc.app.model.ProvieneDe;
 import edu.uabc.app.model.ProyectoMejora;
+import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.TipoProyecto;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IActividadAccionConsultaService;
 import edu.uabc.app.service.IActividadAccionService;
 import edu.uabc.app.service.IDepartamentosService;
+import edu.uabc.app.service.IDocumentosConsultaService;
 import edu.uabc.app.service.IProvieneDeService;
 import edu.uabc.app.service.IProyectoMejoraService;
+import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.ITiposProyectosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 
@@ -60,14 +65,24 @@ public class ProyectoMejoraController {
 	@Autowired
 	private IActividadAccionService serviceActividadAccion;
 	
+	@Autowired
+	ITiposDocumentosService serviceTiposDocumentos;
+	
+	@Autowired
+	private IDocumentosConsultaService serviceDocumentosConsulta;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
-		
+		/*
 		List<ProyectoMejora> listaProyectoMejora = serviceProyectoMejora.buscarTodas();
-		model.addAttribute("proyectoMejora", listaProyectoMejora);
+		model.addAttribute("proyectoMejora", listaProyectoMejora);*/
+		
+		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
+		model.addAttribute("departamentos", listaDepartamento);
+		
 		return "proyecto_mejora/listProyectoMejora";
 	}
 	
@@ -177,5 +192,21 @@ public class ProyectoMejoraController {
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	}
+	
+	@GetMapping("/{id}")
+	public String mostrar(@PathVariable ("id") int idDepartamento, Model model, Authentication authentication) {
+		//Se agrega el nombre del usuario
+		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		Departamento departamento = serviceDepartamentos.buscarPorId(idDepartamento);
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Proyectos de Mejora");
+		
+		List<DocumentoConsulta> listaDocumento = serviceDocumentosConsulta.buscarPorEstatusAndDepartamentoAndTipoDocumento(100, departamento, tipoDocumento);
+		model.addAttribute("departamentos", departamento);
+		model.addAttribute("documentos", listaDocumento);
+		
+		return "/proyecto_mejora/listProyectoMejoraDepartamentos";
 	}
 }

@@ -69,14 +69,18 @@ public class AnalisisRiesgoController {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
-		
+		/*System.out.println("Paso 1");
 		List<Departamento> listaDepartamentos = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamentos);
-		
+		System.out.println("Paso 2");
 		List<UsuarioDocumentoConsulta> listaDocumento = serviceUsuarioDocumentoConsulta.buscarPorUsuario(usuarioAuth);
 		System.out.println("Usuario listaUsuarioDocumentoConsulta: " + listaDocumento);
-
+		System.out.println("Paso 3");
 		model.addAttribute("documentos", listaDocumento);
+		System.out.println("Paso 4");*/
+		
+		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
+		model.addAttribute("departamentos", listaDepartamento);
 		
 		return "analisis_riesgo/listAnalisisRiesgo";
 	}

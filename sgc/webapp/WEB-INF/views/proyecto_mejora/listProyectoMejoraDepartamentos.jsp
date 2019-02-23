@@ -26,12 +26,12 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Acciones Correctivas de ${ departamentos.nombre }</h3>
+		<h3 class="text-center font-weight-bold">Proyectos de Mejora de ${ departamentos.nombre }</h3>
 		<br>
 	<div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
             <tr>
-                <th>Nombre del Documento</th>
+                <th>Nombre del Proyecto de Mejora</th>
                 <th>Descripción</th>
                 <th>Opciones</th>
             </tr>
@@ -40,7 +40,7 @@
                 <td>${ documentos.nombre }</td>
                 <td>${ documentos.descripcion }</td>
                 <td>
-                    <a href="${ urlResources }/docs/accion_correctiva/${ departamentos.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+                    <a href="${ urlResources }/docs/proyecto_mejora/${ departamentos.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
 				</td>
 			</tr>                  
             </c:forEach>

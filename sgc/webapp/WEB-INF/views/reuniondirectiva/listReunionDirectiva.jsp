@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/sgc/resources/css/bootstrap-4-navbar.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-<!--  Línea para agregar los íconos de las acciones-->
+<!--  Linea para agregar los íconos de las acciones-->
 <link rel="stylesheet" href="${ urlResources }/bootstrap3.7/css/glyphicons.css" rel="stylesheet">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
@@ -26,12 +26,12 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Minutas de Reuniones Directivas</h3>
-		
-	<div class="table-responsive">
+		<h3 class="text-center font-weight-bold">Reunión Directiva</h3>
+		<br>
+	  <div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
             <tr>
-                <th>Nombre</th>
+                <th>Nombre del Documento</th>
                 <th>Descripción</th>
                 <th>Opciones</th>
             </tr>
@@ -40,14 +40,15 @@
                 <td>${ documentos.nombre }</td>
                 <td>${ documentos.descripcion }</td>
                 <td>
-                    <a href="${ urlResources }/docs/reunion_directiva/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-download-alt"></span></a>
-            	</td>
-            </tr>
+                    <a href="${ urlResources }/docs/reunion_directiva//${ departamentos.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+				</td>
+			</tr>                  
             </c:forEach>
         </table>
       </div>
 		
 	</div>
+	
 	<jsp:include page="../includes/footer.jsp"></jsp:include>
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -56,3 +57,4 @@
 	<script src="/sgc/resources/js/bootstrap-4-navbar.js"></script>
 
 </body>
+</html>

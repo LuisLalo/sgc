@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.uabc.app.model.Departamento;
+import edu.uabc.app.model.DocumentoConsulta;
+import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IDepartamentosService;
+import edu.uabc.app.service.IDocumentosConsultaService;
+import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 
 @Controller
@@ -25,14 +29,24 @@ public class ProgramaActividadesController {
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
 	
+	@Autowired
+	private IDocumentosConsultaService serviceDocumentosConsulta;
+	
+	@Autowired
+	private ITiposDocumentosService serviceTiposDocumentos;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Authentication authentication, Model model) {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		System.out.println("usuarioAuth: " + usuarioAuth);
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
-		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
-		model.addAttribute("departamentos", listaDepartamento);
+		//Se busca el tipo de documento
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Programa de Actividades");
+		
+		List<DocumentoConsulta> documentos = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
+		model.addAttribute("documentos", documentos);
+		
 		return "programa_actividades/programa_actividades";
 	}
 	

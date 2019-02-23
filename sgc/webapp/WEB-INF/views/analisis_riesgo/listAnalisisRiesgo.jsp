@@ -1,7 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,45 +12,75 @@
 
 <spring:url value="/resources" var="urlResources"></spring:url>
 <spring:url value="/" var="urlRoot"></spring:url>
+<link href="${ urlResources }/bootstrap/css/mdb.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${ urlResources }/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/sgc/resources/css/bootstrap-4-navbar.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="${ urlResources }/bootstrap/css/theme.css" rel="stylesheet">
 
+<style>
+.contenedor {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+}
+
+.texto-encima {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.centrado {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+</style>
 </head>
 
 <body>
 	
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(document).on('mouseenter', '.contenedor', function() {
+				$(this).find(":button").show();
+
+			}).on('mouseleave', '.contenedor', function() {
+				$(this).find(":button").hide();
+
+			});
+		});
+	</script>
+	
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Análisis de Riesgo</h3>
+		<h2 class="text-center font-weight-bold">Análisis de Riesgo</h2>
+		<br>
 		
-		<c:if test="${ mensaje!=null }">
-      		<div class="alert alert-success" role="alert">${ mensaje }</div>
-        </c:if>
-        
-        <sec:authorize access="hasAnyAuthority('SGC')">
-        	<a href="${ urlRoot }analisis_riesgo/crear" class="btn btn-success" role="button" title="Subir Nuevo Análisis de Riesgo" >Nuevo Análisis de Riesgo</a><br><br>
-		</sec:authorize>
-	  	<sec:authorize access="hasAnyAuthority('Area')">
-	  		<a href="${ urlRoot }analisis_riesgo/crear" class="btn btn-success" role="button" title="Subir Nuevo Análisis de Riesgo" >Nuevo Análisis de Riesgo</a><br><br>
-	  	</sec:authorize>
-		<div class="table-responsive">
-        <table class="table table-hover table-striped table-bordered">
-            <tr>
-                <th>No.</th>
-                <th>Departamento</th>
-            </tr>
-            <c:forEach var="departamentos" items="${ departamentos }">
-            <tr>
-            	<td>${ departamentos.id_departamento }</td>
-            	<td><a class="text-dark" href="${ urlRoot }analisis_riesgo/${departamentos.id_departamento}">Análisis de riesgo de ${ departamentos.nombre }</a></td>
-            </tr>
-            </c:forEach>
-        </table>
-      </div>
-    </div>
-	<jsp:include page="../includes/footer.jsp"></jsp:include>
+		<div class="row">
+			<c:forEach var="departamentos" items="${departamentos}">
+				<div class="col-xs-12 col-sm-6 col-md-3">
+				<div class="contenedor">
+					<div class="view overlay">
+					  <a href="${ urlRoot }analisis_riesgo/${departamentos.id_departamento}">
+						<img src="${ urlResources }/images/${departamentos.imagen}" alt="..."  class="img-fluid img-rounded" onmouseover="enfoque(this)"onmouseout="noenfoque(this)">
+						<div class="mask flex-center waves-effect waves-light rgba-white-strong">
+							<form method="get" action="${ urlRoot }analisis_riesgo/${ departamentos.ruta}/${departamentos.id_departamento}">
+								
+							</form>
+						</div>
+					  </a>
+					</div>
+				</div>
+			</div>
+			</c:forEach>
+		</div>
+		
+	</div>
+	<jsp:include page="..//includes/footer.jsp"></jsp:include>
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>

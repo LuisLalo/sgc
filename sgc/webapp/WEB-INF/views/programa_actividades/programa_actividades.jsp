@@ -28,24 +28,24 @@
 	<div class="container">
 		<h3 class="text-center font-weight-bold">Programa de Actividades</h3>
 		<br>
-		<div class="table-responsive">
-	        <table class="table table-hover table-striped table-bordered">
-    	        <tr>
-        	        <th>No.</th>
-            	    <th>Departamento</th>
-            	    <th>Opciones</th>
-	            </tr>
-    	        
-        	    <tr>
-            		<td>1</td>
-            		<td><a class="text-dark" href="${ urlResources }/docs/programa_actividades/2018-Programa-Anual-de-Trabajo-ISO.xlsx">Programa Anual de Trabajo</a></td>
-            		<td>
-                    <a href="${ urlResources }/docs/programa_actividades/2018-Programa-Anual-de-Trabajo-ISO.xlsx"" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+	  <div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered">
+            <tr>
+                <th>Nombre del Documento</th>
+                <th>Descripción</th>
+                <th>Opciones</th>
+            </tr>
+            <c:forEach var="documentos" items="${ documentos }">
+            <tr>
+                <td>${ documentos.nombre }</td>
+                <td>${ documentos.descripcion }</td>
+                <td>
+                    <a href="${ urlResources }/docs/programa_actividades/${ departamentos.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
 				</td>
-	            </tr>
-    	     
-        	</table>        	
-		</div>
+			</tr>                  
+            </c:forEach>
+        </table>
+      </div>
 		
 	</div>
 	
