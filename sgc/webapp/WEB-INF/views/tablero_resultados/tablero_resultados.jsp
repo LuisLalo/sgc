@@ -68,7 +68,7 @@
 					  <a href="${ urlRoot }tablero_resultados/${departamentos.id_departamento}">
 						<img src="${ urlResources }/images/${departamentos.imagen}" alt="..."  class="img-fluid img-rounded" onmouseover="enfoque(this)"onmouseout="noenfoque(this)">
 						<div class="mask flex-center waves-effect waves-light rgba-white-strong">
-							<form method="get" action="${ urlRoot }tablero_resultados/${ departamentos.ruta}/${departamentos.id_departamento}">
+							<form method="get" action="${ urlRoot }tablero_resultados/${ documentos.departamento.ruta }/${departamentos.id_departamento}">
 								
 							</form>
 						</div>

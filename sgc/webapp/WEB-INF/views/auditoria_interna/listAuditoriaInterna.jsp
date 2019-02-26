@@ -26,7 +26,7 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Auditoría Interna</h3>
+		<h3 class="text-center font-weight-bold">Resultados de Auditoría Interna</h3>
 		
 		<div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
@@ -40,7 +40,7 @@
                 <td>${ documentos.nombre }</td>
                 <td>${ documentos.descripcion }</td>
                 <td>
-                    <a href="${ urlResources }/docs/auditoria_interna/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+                    <a href="${ urlResources }/docs/auditoria_interna/${ documentos.departamento.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-download-alt"></span></a>
             	</td>
             </tr>
             </c:forEach>

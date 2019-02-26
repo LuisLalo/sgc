@@ -51,7 +51,7 @@ public class ReunionTrabajoController {
 		//List<DocumentoActualizar> lista = Utileria.identificarReunionTrabajo(listaDocumento, lineaAutorizacion.size());
 		model.addAttribute("documentos", listaDocumento);*/
 		
-		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Programa de Actividades");
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Reuniones de Trabajo");
 		
 		List<DocumentoConsulta> documentos = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
 		model.addAttribute("documentos", documentos);

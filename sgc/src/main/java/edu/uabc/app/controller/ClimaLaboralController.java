@@ -51,7 +51,7 @@ public class ClimaLaboralController {
 		//List<DocumentoActualizar> lista = Utileria.identificarEncuestaClimaLaboral(listaDocumento, lineaAutorizacion.size());
 		model.addAttribute("documentos", listaDocumento);*/
 		
-		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Clima Laboral");
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Encuesta Clima Laboral");
 		
 		List<DocumentoConsulta> documentos = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
 		model.addAttribute("documentos", documentos);

@@ -56,7 +56,7 @@ public class TableroResultadoIndex {
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
 		Departamento departamento = serviceDepartamentos.buscarPorId(idDepartamento);
-		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Tablero de Resultados");
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Indicadores");
 		
 		List<DocumentoConsulta> listaDocumento = serviceDocumentosConsulta.buscarPorEstatusAndDepartamentoAndTipoDocumento(100, departamento, tipoDocumento);
 		model.addAttribute("departamentos", departamento);

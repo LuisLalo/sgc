@@ -243,12 +243,14 @@ public class AccionCorrectivaController {
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
 		Departamento departamento = serviceDepartamentos.buscarPorId(idDepartamento);
-		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Acción Correctiva");
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Acciones Correctivas");
 		
 		List<DocumentoConsulta> listaDocumento = serviceDocumentosConsulta.buscarPorEstatusAndDepartamentoAndTipoDocumento(100, departamento, tipoDocumento);
 		model.addAttribute("departamentos", departamento);
 		model.addAttribute("documentos", listaDocumento);
-		
+		System.out.println("Documento encontrado:" + listaDocumento);
+		System.out.println("Departamento:" + departamento);
+		System.out.println("Tipos documento:" + tipoDocumento);
 		return "/accion_correctiva/listAccionCorrectivaDepartamentos";
 	}
 }

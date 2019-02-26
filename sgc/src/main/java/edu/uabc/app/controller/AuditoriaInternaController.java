@@ -52,7 +52,7 @@ public class AuditoriaInternaController {
 		model.addAttribute("documentos", listaDocumento);
 		*/
 		
-		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Auditoría Interna");
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Resultados de Auditoría Interna");
 		
 		List<DocumentoConsulta> documentos = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
 		model.addAttribute("documentos", documentos);

@@ -39,7 +39,7 @@
                 <td>${ documentos.nombre }</td>
                 <td>${ documentos.descripcion }</td>
                 <td>
-                    <a href="${ urlResources }/docs/encuesta_clima_laboral/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+                    <a href="${ urlResources }/docs/encuesta_clima_laboral/${ documentos.departamento.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-download-alt"></span></a>
             	</td>
             </tr>
             </c:forEach>

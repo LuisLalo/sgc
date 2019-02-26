@@ -65,12 +65,7 @@
           <div class="alert alert-success" role="alert">${ mensaje }</div>
     </c:if>
       
-    <sec:authorize access="hasAnyAuthority('SGC')">
-    	  <a href="${ urlRoot }accion_correctiva/crear" class="btn btn-success" role="button" title="Crear Nueva Accion Correctiva" >Nueva Acción Correctiva</a><br><br>
-	    </sec:authorize>
-	<sec:authorize access="hasAnyAuthority('Area')">
-      	  <a href="${ urlRoot }accion_correctiva/crear" class="btn btn-success" role="button" title="Crear Nueva Accion Correctiva" >Nueva Acción Correctiva</a><br><br>
-	</sec:authorize>
+    
 	
 	<br>
 
