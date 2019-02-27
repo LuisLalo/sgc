@@ -455,7 +455,10 @@
                 </div>
             </nav>
         </sec:authorize>    
-
+</div>
+<!-- Menu de generado por base de datos -->
+<div class="container">
+${ menu.nombre }
 </div>
 
 <div class="container">

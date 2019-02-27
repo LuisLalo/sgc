@@ -1,5 +1,7 @@
 package edu.uabc.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.UsuarioConsulta;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 
 @Controller
@@ -16,6 +20,9 @@ public class HomeController {
 	
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
+	
+	@Autowired
+	private IMenuService serviceMenu;
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String mostrarLogin() {
@@ -35,9 +42,17 @@ public class HomeController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatus(1);
+		model.addAttribute("menu", listaMenu);
+		
+		
 		for(GrantedAuthority rol: authentication.getAuthorities()) {
 			System.out.println("Rol: " + rol.getAuthority());
+			System.out.println("Menu: " + listaMenu);
 		}
+		
+		
+		
 		return "home";
 	}
 	
