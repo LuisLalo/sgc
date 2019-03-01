@@ -32,4 +32,10 @@ public class MenuServiceJPA implements IMenuService{
 		return lista;
 	}
 
+	@Override
+	public List<Menu> buscarPorEstatusAndTipoVentana(int idEstatus, int idTipoVentana) {
+		List<Menu> lista = menuRepo.findByIdEstatusAndIdTipoVentana(idEstatus, idTipoVentana);
+		return lista;
+	}
+
 }

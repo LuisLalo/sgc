@@ -456,10 +456,9 @@
             </nav>
         </sec:authorize>    
 </div>
-<!-- Menu de generado por base de datos -->
-<div class="container">
-${ menu.nombre }
-</div>
+<br>
+${ menu }
+
 
 <div class="container">
 <nav class="navbar navbar-light">

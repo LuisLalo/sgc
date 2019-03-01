@@ -14,6 +14,7 @@ import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 
 @Controller
 public class HomeController {
@@ -42,13 +43,16 @@ public class HomeController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatus(1);
-		model.addAttribute("menu", listaMenu);
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
 		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		for(GrantedAuthority rol: authentication.getAuthorities()) {
 			System.out.println("Rol: " + rol.getAuthority());
-			System.out.println("Menu: " + listaMenu);
+			//System.out.println("Menu: " + listaMenu);
 		}
 		
 		

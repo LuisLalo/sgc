@@ -23,17 +23,18 @@ public class Menu {
 	private int idEstatus;
 	@Column(name="id_submenu")
 	private int idSubmenu;
+	private int relacion;
 	
 	public Menu() {
 		
 	}
 
-	public int getId_menu() {
-		return id_menu;
+	public int getIdMenu() {
+		return idMenu;
 	}
 
-	public void setId_menu(int id_menu) {
-		this.id_menu = id_menu;
+	public void setIdMenu(int idMenu) {
+		this.idMenu = idMenu;
 	}
 
 	public String getNombre() {
@@ -52,33 +53,41 @@ public class Menu {
 		this.liga = liga;
 	}
 
-	public int getId_tipo_ventana() {
-		return id_tipo_ventana;
+	public int getIdTipoVentana() {
+		return idTipoVentana;
 	}
 
-	public void setId_tipo_ventana(int id_tipo_ventana) {
-		this.id_tipo_ventana = id_tipo_ventana;
+	public void setIdTipoVentana(int idTipoVentana) {
+		this.idTipoVentana = idTipoVentana;
 	}
 
-	public int getId_estatus() {
-		return id_estatus;
+	public int getIdEstatus() {
+		return idEstatus;
 	}
 
-	public void setId_estatus(int id_estatus) {
-		this.id_estatus = id_estatus;
+	public void setIdEstatus(int idEstatus) {
+		this.idEstatus = idEstatus;
 	}
 
-	public int getId_submenu() {
-		return id_submenu;
+	public int getIdSubmenu() {
+		return idSubmenu;
 	}
 
-	public void setId_submenu(int id_submenu) {
-		this.id_submenu = id_submenu;
+	public void setIdSubmenu(int idSubmenu) {
+		this.idSubmenu = idSubmenu;
+	}
+
+	public int getRelacion() {
+		return relacion;
+	}
+
+	public void setRelacion(int relacion) {
+		this.relacion = relacion;
 	}
 
 	@Override
 	public String toString() {
-		return "Menu [id_menu=" + id_menu + ", nombre=" + nombre + ", liga=" + liga + ", id_tipo_ventana="
-				+ id_tipo_ventana + ", id_estatus=" + id_estatus + ", id_submenu=" + id_submenu + "]";
+		return "Menu [idMenu=" + idMenu + ", nombre=" + nombre + ", liga=" + liga + ", idTipoVentana=" + idTipoVentana
+				+ ", idEstatus=" + idEstatus + ", idSubmenu=" + idSubmenu + ", relacion=" + relacion + "]";
 	}
 }

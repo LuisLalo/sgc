@@ -13,9 +13,12 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 	// select * from Menu
 	List<Menu> findBy();
 	
-	// select * from Menu where estatus
+	// select * from Menu where id_estatus
 	List<Menu> findByIdEstatus(int idEstatus);
 	
 	// select * from Menu where id_submenu
 	List<Menu> findByIdSubmenu(int idSubmenu);
+	
+	// select * from Menu where id_estatus and id_tipo_ventana
+	List<Menu> findByIdEstatusAndIdTipoVentana(int idEstatus, int idTipoVentana);
 }
