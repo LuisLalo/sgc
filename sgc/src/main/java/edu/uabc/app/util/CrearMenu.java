@@ -9,7 +9,9 @@ public class CrearMenu {
 	public static String menu(List<Menu> listaMenu, List<Menu> listaSubMenu, List<Menu> listaSubSubMenu/*, falta agregar la tabla de los permisos*/) {
 		
 		// Se buscan la cantidad de elementos que conforman el menu
-		int size = listaMenu.size();
+		int sizeListaMenu = listaMenu.size();
+		int sizeListaSubMenu = listaSubMenu.size();
+		int sizeListaSubSubMenu = listaSubSubMenu.size();
 		
 		// Se crean las variables con el contenido del código que crea el menu
 		String nombre, liga, menuCompleto;
@@ -44,19 +46,20 @@ public class CrearMenu {
 				"                        </li>\r\n";
 		String fin = "</ul></nav></div>";
 		menuCompleto = comienzo;
-		for(int num=0;num<size;num++) {
+		for(int num=0;num<sizeListaMenu;num++) {
 			if(num!=0) {
 				if(listaMenu.get(num).getIdSubmenu()==1) {
 					nombre = listaMenu.get(num).getNombre();
 					liga = listaMenu.get(num).getLiga();
-					//System.out.println("Menu Crear nombre: " + nombre);
-					//System.out.println("Menu Crear liga: " + liga);
 					
 					menuCompleto = menuCompleto.concat(navItemDropdownInicio);
 					menuCompleto = menuCompleto.concat(liga);
 					menuCompleto = menuCompleto.concat(navItemDropdownMedio);
 					menuCompleto = menuCompleto.concat(nombre);
 					menuCompleto = menuCompleto.concat(navItemDropdownFin);
+					
+					// se agregan los submenus
+					
 				}
 				else {
 					menuCompleto = menuCompleto.concat(navItemInicio);
