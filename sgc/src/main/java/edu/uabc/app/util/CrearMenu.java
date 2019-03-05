@@ -44,8 +44,7 @@ public class CrearMenu {
 		String dropdownItemInicioDos = "       					<li><a class=\"dropdown-item\" href=\"";
 		String dropdownItemMedio = "\">";
 		String dropdownItemFin = "</a></li>\r\n";
-		String dropdownItemUltimo = "       				</ul>\r\n" + 
-				"       			</li>\r\n";
+		String dropdownItemUltimo = "       				</ul>\r\n";
 		String dropdownItemUltimoFin = "       			</li>\r\n";
 		
 		String fin = "</ul></nav></div>";
@@ -94,12 +93,15 @@ public class CrearMenu {
 						}
 						 // Se identifica si el elemento es el último de la lista
 						if(cont==sizeListaSubMenu-1) {
+							if(contador==0) {
+								menuCompleto = menuCompleto.concat(dropdownItemUltimoFin);
 							//System.out.println("Contador cont dentro de if: " + cont);
 							//System.out.println("Tamaño de lista SubMenu: " + sizeListaSubMenu);
-							menuCompleto = menuCompleto.concat(dropdownItemUltimo);
-						}
-						else {
-							menuCompleto = menuCompleto.concat(dropdownItemUltimoFin);
+							}
+							else {
+								menuCompleto = menuCompleto.concat(dropdownItemUltimo);
+								menuCompleto = menuCompleto.concat(dropdownItemUltimoFin);
+							}
 						}
 					}
 					
