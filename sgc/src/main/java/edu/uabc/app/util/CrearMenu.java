@@ -47,6 +47,13 @@ public class CrearMenu {
 		String dropdownItemUltimo = "       				</ul>\r\n";
 		String dropdownItemUltimoFin = "       			</li>\r\n";
 		
+		String dropdownItemSubSubMenuInicio = "<ul class=\"dropdown-menu\">\r\n" + 
+				"                                        <li><a class=\"dropdown-item\" href=\"";
+		String dropdownItemSubSubMenuMedio = "\">";
+		String dropdownItemSubSubMenuFin = "</a></li>\r\n";
+		String dropdownItemSubSubMenuUltimo = "</ul>\r\n";
+		String dropdownItemSubSubMenuUltimoFin = "</ul>\r\n" + 
+				"								</li>\r\n";
 		String fin = "</ul></nav></div>";
 		menuCompleto = comienzo;
 		for(int num=0;num<sizeListaMenu;num++) {
@@ -67,7 +74,7 @@ public class CrearMenu {
 					//int contadorUno=0;
 					// Se agregan los submenus
 					for(int cont=0;cont<sizeListaSubMenu;cont++) {
-						// Se identifia la relación del submenu con el menu
+						// Se identifica la relación del submenu con el menu
 						if(listaSubMenu.get(cont).getRelacion()==num+1) {
 							nombre = listaSubMenu.get(cont).getNombre();
 							liga = listaSubMenu.get(cont).getLiga();
@@ -82,6 +89,22 @@ public class CrearMenu {
 									menuCompleto = menuCompleto.concat(nombre);
 									menuCompleto = menuCompleto.concat(dropdownToggleFin);
 									contador++;
+									
+									// Se agrega el sub-submenu
+									for (int contUno=0;contUno<sizeListaSubSubMenu;contUno++) {
+										// Se identifica la relación del sub-submenu con el submenu
+										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getIdMenu()) {
+											nombre = listaSubSubMenu.get(contUno).getNombre();
+											liga = listaSubSubMenu.get(contUno).getLiga();
+											
+											// Se agrega el código html con el sub-submenu
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuInicio);
+											menuCompleto = menuCompleto.concat(liga);
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuMedio);
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuFin);
+											
+										}
+									}
 								}
 								// El submenu no es el primero de la lista
 								else {
@@ -90,6 +113,23 @@ public class CrearMenu {
 									menuCompleto = menuCompleto.concat(dropdownToggleMedio);
 									menuCompleto = menuCompleto.concat(nombre);
 									menuCompleto = menuCompleto.concat(dropdownToggleFin);
+									
+									// Se agrega el sub-submenu
+									// Se agrega el sub-submenu
+									for (int contUno=0;contUno<sizeListaSubSubMenu;contUno++) {
+										// Se identifica la relación del sub-submenu con el submenu
+										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getIdMenu()) {
+											nombre = listaSubSubMenu.get(contUno).getNombre();
+											liga = listaSubSubMenu.get(contUno).getLiga();
+											
+											// Se agrega el código html con el sub-submenu
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuInicio);
+											menuCompleto = menuCompleto.concat(liga);
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuMedio);
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuFin);
+											
+										}
+									}
 								}
 							}
 							// Se identifica si el submenu no tiene sub-submenu
