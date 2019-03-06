@@ -36,9 +36,9 @@ public class CrearMenu {
 		String navItemDropdownMedio = "\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">";
 		String navItemDropdownFin = "</a>\r\n";
 		
-		String dropdownToggleInicio = "<li><a class=\"dropdown-item dropdown-toggle\" href=\"#\">";
+		String dropdownToggleInicio = "       					<li><a class=\"dropdown-item dropdown-toggle\" href=\"";
 		String dropdownToggleMedio = "\">";
-		String dropdownToggleFin = "</a>";
+		String dropdownToggleFin = "</a>\r\n";
 		
 		String dropdownItemInicio = "       				<ul class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">\r\n";
 		String dropdownItemInicioDos = "       					<li><a class=\"dropdown-item\" href=\"";
@@ -62,34 +62,58 @@ public class CrearMenu {
 					menuCompleto = menuCompleto.concat(nombre);
 					menuCompleto = menuCompleto.concat(navItemDropdownFin);
 					
+					// Contador del submenu
 					int contador=0;
+					//int contadorUno=0;
 					// Se agregan los submenus
 					for(int cont=0;cont<sizeListaSubMenu;cont++) {
-						//System.out.println("Contador cont fuera de if: " + cont);
 						// Se identifia la relación del submenu con el menu
 						if(listaSubMenu.get(cont).getRelacion()==num+1) {
 							nombre = listaSubMenu.get(cont).getNombre();
 							liga = listaSubMenu.get(cont).getLiga();
 							
-							// Se identifica si el submenu es el primero en la lista
-							if(contador==0) {
-								System.out.println("Contador cont fuera de if: " + cont);
-								menuCompleto = menuCompleto.concat(dropdownItemInicio);
-								menuCompleto = menuCompleto.concat(dropdownItemInicioDos);
-								menuCompleto = menuCompleto.concat(liga);
-								menuCompleto = menuCompleto.concat(dropdownItemMedio);
-								menuCompleto = menuCompleto.concat(nombre);
-								menuCompleto = menuCompleto.concat(dropdownItemFin);
-								contador++;
+							// Se identifica si el submenu tiene sub-submenu
+							if(listaSubMenu.get(cont).getIdSubmenu()==1) {
+								// Se identifica si el submenu es el primero en la lista
+								if(contador==0) {
+									menuCompleto = menuCompleto.concat(dropdownToggleInicio);
+									menuCompleto = menuCompleto.concat(liga);
+									menuCompleto = menuCompleto.concat(dropdownToggleMedio);
+									menuCompleto = menuCompleto.concat(nombre);
+									menuCompleto = menuCompleto.concat(dropdownToggleFin);
+									contador++;
+								}
+								// El submenu no es el primero de la lista
+								else {
+									menuCompleto = menuCompleto.concat(dropdownToggleInicio);
+									menuCompleto = menuCompleto.concat(liga);
+									menuCompleto = menuCompleto.concat(dropdownToggleMedio);
+									menuCompleto = menuCompleto.concat(nombre);
+									menuCompleto = menuCompleto.concat(dropdownToggleFin);
+								}
 							}
+							// Se identifica si el submenu no tiene sub-submenu
 							else {
-								menuCompleto = menuCompleto.concat(dropdownItemInicioDos);
-								menuCompleto = menuCompleto.concat(liga);
-								menuCompleto = menuCompleto.concat(dropdownItemMedio);
-								menuCompleto = menuCompleto.concat(nombre);
-								menuCompleto = menuCompleto.concat(dropdownItemFin);
+								// Se identifica si el submenu es el primero en la lista
+								if(contador==0) {
+									//System.out.println("Contador cont fuera de if: " + cont);
+									menuCompleto = menuCompleto.concat(dropdownItemInicio);
+									menuCompleto = menuCompleto.concat(dropdownItemInicioDos);
+									menuCompleto = menuCompleto.concat(liga);
+									menuCompleto = menuCompleto.concat(dropdownItemMedio);
+									menuCompleto = menuCompleto.concat(nombre);
+									menuCompleto = menuCompleto.concat(dropdownItemFin);
+									contador++;
+								}
+								// El submenu no es el primedo de la lista
+								else {
+									menuCompleto = menuCompleto.concat(dropdownItemInicioDos);
+									menuCompleto = menuCompleto.concat(liga);
+									menuCompleto = menuCompleto.concat(dropdownItemMedio);
+									menuCompleto = menuCompleto.concat(nombre);
+									menuCompleto = menuCompleto.concat(dropdownItemFin);
+								}
 							}
-							
 						}
 						 // Se identifica si el elemento es el último de la lista
 						if(cont==sizeListaSubMenu-1) {
@@ -104,8 +128,6 @@ public class CrearMenu {
 							}
 						}
 					}
-					
-					
 				}
 				// Opciones del menu que no tienen submenu
 				else {
@@ -118,14 +140,10 @@ public class CrearMenu {
 					menuCompleto = menuCompleto.concat(navItemFin);
 				}
 			}
-			
-			
 		}
 		menuCompleto = menuCompleto.concat(fin);
 		System.out.println("menuCompleto: " + menuCompleto);
 		
 		return menuCompleto;
 	}
-	
-	
 }
