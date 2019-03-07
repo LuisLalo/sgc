@@ -38,7 +38,8 @@ public class CrearMenu {
 		
 		String dropdownToggleInicio = "       					<li><a class=\"dropdown-item dropdown-toggle\" href=\"";
 		String dropdownToggleMedio = "\">";
-		String dropdownToggleFin = "</a>\r\n";
+		String dropdownToggleFin = "</a>\r\n" + 
+				"       						<ul class=\"dropdown-menu\">\r\n";
 		
 		String dropdownItemInicio = "       				<ul class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">\r\n";
 		String dropdownItemInicioDos = "       					<li><a class=\"dropdown-item\" href=\"";
@@ -47,13 +48,12 @@ public class CrearMenu {
 		String dropdownItemUltimo = "       				</ul>\r\n";
 		String dropdownItemUltimoFin = "       			</li>\r\n";
 		
-		String dropdownItemSubSubMenuInicio = "<ul class=\"dropdown-menu\">\r\n" + 
-				"                                        <li><a class=\"dropdown-item\" href=\"";
+		String dropdownItemSubSubMenuInicio = "       							<li><a class=\"dropdown-item\" href=\"";
 		String dropdownItemSubSubMenuMedio = "\">";
 		String dropdownItemSubSubMenuFin = "</a></li>\r\n";
-		String dropdownItemSubSubMenuUltimo = "</ul>\r\n";
-		String dropdownItemSubSubMenuUltimoFin = "</ul>\r\n" + 
-				"								</li>\r\n";
+		String dropdownItemSubSubMenuUltimo = "       						</ul>\r\n";
+	//	String dropdownItemSubSubMenuUltimoFin = "</ul>\r\n" + 
+	//			"								</li>\r\n";
 		String fin = "</ul></nav></div>";
 		menuCompleto = comienzo;
 		for(int num=0;num<sizeListaMenu;num++) {
@@ -93,7 +93,9 @@ public class CrearMenu {
 									// Se agrega el sub-submenu
 									for (int contUno=0;contUno<sizeListaSubSubMenu;contUno++) {
 										// Se identifica la relación del sub-submenu con el submenu
-										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getIdMenu()) {
+										System.out.println(listaSubMenu.get(cont).getIdMenu());
+										System.out.println(listaSubSubMenu.get(contUno).getRelacion());
+										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getRelacion()) {
 											nombre = listaSubSubMenu.get(contUno).getNombre();
 											liga = listaSubSubMenu.get(contUno).getLiga();
 											
@@ -101,8 +103,14 @@ public class CrearMenu {
 											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuInicio);
 											menuCompleto = menuCompleto.concat(liga);
 											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuMedio);
+											menuCompleto = menuCompleto.concat(nombre);
 											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuFin);
 											
+										}
+										
+										// Se identifica si es el último sub-submenu para agregar la etiqueta de cierre
+										if(contUno==sizeListaSubSubMenu-1) {
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuUltimo);
 										}
 									}
 								}
@@ -115,10 +123,11 @@ public class CrearMenu {
 									menuCompleto = menuCompleto.concat(dropdownToggleFin);
 									
 									// Se agrega el sub-submenu
-									// Se agrega el sub-submenu
 									for (int contUno=0;contUno<sizeListaSubSubMenu;contUno++) {
 										// Se identifica la relación del sub-submenu con el submenu
-										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getIdMenu()) {
+										System.out.println("id subMenu:" + listaSubMenu.get(cont).getIdMenu());
+										System.out.println("id sub-submenu relación: " + listaSubSubMenu.get(contUno).getRelacion());
+										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getRelacion()) {
 											nombre = listaSubSubMenu.get(contUno).getNombre();
 											liga = listaSubSubMenu.get(contUno).getLiga();
 											
@@ -126,8 +135,14 @@ public class CrearMenu {
 											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuInicio);
 											menuCompleto = menuCompleto.concat(liga);
 											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuMedio);
+											menuCompleto = menuCompleto.concat(nombre);
 											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuFin);
 											
+										}
+										
+										// Se identifica si es el último sub-submenu para agregar la etiqueta de cierre
+										if(contUno==sizeListaSubSubMenu-1) {
+											menuCompleto = menuCompleto.concat(dropdownItemSubSubMenuUltimo);
 										}
 									}
 								}
