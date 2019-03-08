@@ -43,6 +43,7 @@ public class HomeController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		// Se agrega el menu generado por base de datos
 		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
 		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
 		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);

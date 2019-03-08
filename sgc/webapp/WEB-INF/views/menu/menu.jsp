@@ -23,11 +23,17 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Menu</h3>
+		<h3 class="text-center font-weight-bold">Opciones de Menu</h3>
 	</div>
+	<br>
+		<div class="table-responsive">
+		
+		</div>
+	
+	
 	<jsp:include page="../includes/footer.jsp"></jsp:include>
 	
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="/sgc/resources/js/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<script src="${ urlResources }/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/sgc/resources/js/bootstrap-4-navbar.js"></script>
