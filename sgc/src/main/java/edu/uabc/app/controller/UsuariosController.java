@@ -22,16 +22,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.EstatusUsuario;
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.Puesto;
 import edu.uabc.app.model.Rol;
 import edu.uabc.app.model.UsuarioActualizar;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IEstatusUsuarioService;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IPuestosService;
 import edu.uabc.app.service.IRolesService;
 import edu.uabc.app.service.IUsuariosActualizarService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 import edu.uabc.app.util.EnviarCorreo;
 
 @Controller
@@ -56,6 +59,9 @@ public class UsuariosController {
 	@Autowired
 	private IEstatusUsuarioService serviceEstatusUsuario;
 	
+	@Autowired
+	private IMenuService serviceMenu;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Authentication authentication, Model model) throws Exception {
 		List<UsuarioConsulta> lista = serviceUsuariosConsulta.buscarTodas();
@@ -64,6 +70,14 @@ public class UsuariosController {
 		
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		// Se envía correo con la notificación al usuario
 		//EnviarCorreo.EnviarNotificacion();
@@ -84,6 +98,14 @@ public class UsuariosController {
 		
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		return "usuarios/formUsuariosNuevo";
 	}
@@ -126,6 +148,14 @@ public class UsuariosController {
 		
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		return "usuarios/formUsuariosEditar";
 	}

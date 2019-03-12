@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.DocumentoActualizar;
 import edu.uabc.app.model.DocumentoConsulta;
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.TipoArchivo;
 import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
@@ -29,11 +30,13 @@ import edu.uabc.app.model.UsuarioDocumentoConsulta;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IDocumentosActualizarService;
 import edu.uabc.app.service.IDocumentosConsultaService;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.ITiposArchivosService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuarioDocumentoConsultaService;
 import edu.uabc.app.service.IUsuarioDocumentoService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 import edu.uabc.app.util.Utileria;
 
 @Controller
@@ -64,6 +67,9 @@ public class AnalisisRiesgoController {
 	@Autowired
 	private IUsuarioDocumentoService serviceUsuarioDocumento;
 	
+	@Autowired
+	private IMenuService serviceMenu;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
@@ -78,6 +84,14 @@ public class AnalisisRiesgoController {
 		System.out.println("Paso 3");
 		model.addAttribute("documentos", listaDocumento);
 		System.out.println("Paso 4");*/
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamento);

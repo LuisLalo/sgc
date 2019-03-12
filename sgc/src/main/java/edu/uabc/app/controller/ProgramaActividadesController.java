@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.DocumentoConsulta;
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IDocumentosConsultaService;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 
 @Controller
 @RequestMapping("/programa_actividades")
@@ -35,11 +38,22 @@ public class ProgramaActividadesController {
 	@Autowired
 	private ITiposDocumentosService serviceTiposDocumentos;
 	
+	@Autowired
+	private IMenuService serviceMenu;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Authentication authentication, Model model) {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		System.out.println("usuarioAuth: " + usuarioAuth);
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		//Se busca el tipo de documento
 		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Programa de Actividades");

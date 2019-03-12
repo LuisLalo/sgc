@@ -15,15 +15,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.LineaAutorizacion;
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.Puesto;
 import edu.uabc.app.model.Rol;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.model.UsuarioLineaAutorizacion;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.ILineaAutorizacionService;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IPuestosService;
 import edu.uabc.app.service.IRolesService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 
 @Controller
 @RequestMapping("/linea-autorizacion")
@@ -44,11 +47,22 @@ public class LineaAutorizacionController {
 	@Autowired
 	private IRolesService serviceRoles;
 	
+	@Autowired
+	private IMenuService serviceMenu;
+		
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		//Se agrega el nombre del empleado
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamento);
@@ -60,6 +74,14 @@ public class LineaAutorizacionController {
 		//Se agrega el nombre del empleado
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
@@ -231,6 +253,14 @@ public class LineaAutorizacionController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
+		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
 		model.addAttribute("departamentos", departamento);
@@ -299,6 +329,14 @@ public class LineaAutorizacionController {
 		//Se agrega el nombre del empleado
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
@@ -369,6 +407,14 @@ public class LineaAutorizacionController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
+
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
 		model.addAttribute("departamentos", departamento);
@@ -437,6 +483,14 @@ public class LineaAutorizacionController {
 		//Se agrega el nombre del empleado
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
@@ -507,6 +561,14 @@ public class LineaAutorizacionController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
+		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
 		model.addAttribute("departamentos", departamento);
@@ -576,6 +638,14 @@ public class LineaAutorizacionController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
+		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);
 		model.addAttribute("departamentos", departamento);
@@ -644,6 +714,14 @@ public class LineaAutorizacionController {
 		//Se agrega el nombre del empleado
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		//Nombre del departamento
 		Departamento departamento = serviceDepartamentos.buscarPorId(id_departamento);

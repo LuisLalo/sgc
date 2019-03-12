@@ -37,17 +37,10 @@
 		}
 	</script>
 
-
-
 	<jsp:include page="../includes/header.jsp"></jsp:include>
-
-
 
 	<div class="container theme-showcase" role="main" align="center">
 		<!--  <h1 align="center"></h1>-->
-
-
-
 
 		<h3><b>Mensajes Enviados</b></h3>
 
@@ -61,7 +54,6 @@
 							<tr>
 								<td><form method="get" action="${urlReda}"> <button type="submit" class="btn btn-danger">Redactar</button></form></td>
 								</td>
-
 							</tr>
 							<tr  onclick="verDetalles(event)">
 								<td class="en"><b><a href="${urlEnvi}" style='text-decoration:none;color:black;(otros)'>Enviados</a> </b></td>
@@ -103,10 +95,8 @@
 									role="button" title="eliminar"><span
 										class="glyphicon glyphicon-trash"></span></a> </div>
 								</td>
-
 							</tr>
 							<tr>
-								
 								<td>Miguel Ángel Nieblas</td>
 								<td>Problemas x cosa</td>
 								<td>25 mayo 2018</td>
@@ -117,10 +107,8 @@
 									role="button" title="eliminar"><span
 										class="glyphicon glyphicon-trash"></span></a> </div>
 								</td>
-
 							</tr>
 							<tr>
-								
 								<td>Andrés Barraza</td>
 								<td>Problemas con procedimientos</td>
 								<td>1 mayo 2018</td>
@@ -131,25 +119,15 @@
 									role="button" title="eliminar"><span
 										class="glyphicon glyphicon-trash"></span></a> </div>
 								</td>
-
 							</tr>
-
-
-
 						</table></td>
-
 				</tr>
-
-
 			</table>
 
 		</div>
 
 	</div>
-
-
-
-
+	
 	<hr class="featurette-divider">
 
 	<hr class="featurette-divider">
@@ -157,6 +135,7 @@
 	<jsp:include page="../includes/footer.jsp"></jsp:include>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<script src="${ urlResources }/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/sgc/resources/js/bootstrap-4-navbar.js"></script>

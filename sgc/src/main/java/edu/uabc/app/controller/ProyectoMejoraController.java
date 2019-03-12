@@ -25,6 +25,7 @@ import edu.uabc.app.model.ActividadAccion;
 import edu.uabc.app.model.ActividadAccionConsulta;
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.DocumentoConsulta;
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.ProvieneDe;
 import edu.uabc.app.model.ProyectoMejora;
 import edu.uabc.app.model.TipoDocumento;
@@ -34,11 +35,13 @@ import edu.uabc.app.service.IActividadAccionConsultaService;
 import edu.uabc.app.service.IActividadAccionService;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IDocumentosConsultaService;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IProvieneDeService;
 import edu.uabc.app.service.IProyectoMejoraService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.ITiposProyectosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 
 @Controller
 @RequestMapping("proyecto_mejora")
@@ -71,6 +74,9 @@ public class ProyectoMejoraController {
 	@Autowired
 	private IDocumentosConsultaService serviceDocumentosConsulta;
 	
+	@Autowired
+	private IMenuService serviceMenu;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
@@ -80,6 +86,13 @@ public class ProyectoMejoraController {
 		List<ProyectoMejora> listaProyectoMejora = serviceProyectoMejora.buscarTodas();
 		model.addAttribute("proyectoMejora", listaProyectoMejora);*/
 		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamento);
 		

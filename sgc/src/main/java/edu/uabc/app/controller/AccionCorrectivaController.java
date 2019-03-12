@@ -29,6 +29,7 @@ import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.DocumentoConsulta;
 import edu.uabc.app.model.EstatusAccion;
 import edu.uabc.app.model.Evaluacion;
+import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.ObservacionNorma;
 import edu.uabc.app.model.ProvieneDe;
 import edu.uabc.app.model.TipoAuditoria;
@@ -42,11 +43,13 @@ import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IDocumentosConsultaService;
 import edu.uabc.app.service.IEstatusAccionService;
 import edu.uabc.app.service.IEvaluacionService;
+import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IObservacionNormaService;
 import edu.uabc.app.service.IProvieneDeService;
 import edu.uabc.app.service.ITiposAuditoriaService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.CrearMenu;
 
 @Controller
 @RequestMapping("/accion_correctiva")
@@ -91,6 +94,9 @@ public class AccionCorrectivaController {
 	@Autowired
 	private IDocumentosConsultaService serviceDocumentosConsulta;
 	
+	@Autowired
+	private IMenuService serviceMenu;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
@@ -100,6 +106,14 @@ public class AccionCorrectivaController {
 		List<AccionCorrectiva>listaAccionCorrectiva = serviceAccionesCorrectivas.buscarTodas();
 		System.out.println("Accion correctiva: " + listaAccionCorrectiva);
 		model.addAttribute("accionCorrectiva", listaAccionCorrectiva);*/
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
 		
 		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamento);

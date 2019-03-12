@@ -37,19 +37,21 @@
     			<div class="modal-content">
     				<!-- Header de la ventana -->
       				<div class="modal-header">
-        				<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        				<h5 class="modal-title" id="exampleModalLongTitle">Generar Nueva Sección</h5>
         				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           					<span aria-hidden="true">&times;</span>
         				</button>
       				</div>
       				<!-- Contenido de la ventana -->
       				<div class="modal-body">
-      		
+      				<p>Hola</p>	
+      					
+      					
        				</div>
         			<!-- Contenido del footer -->
       				<div class="modal-footer">
+      					<button type="button" class="btn btn-success">Guardar</button>
         				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-        				<button type="button" class="btn btn-success">Guardar</button>
       				</div>
     			</div>
   			</div>
