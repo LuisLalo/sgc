@@ -37,15 +37,22 @@ public class MenuController {
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
 		// Se agrega el menu generado por base de datos
-				List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
-				List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
-				List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
-				
-				String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
-				model.addAttribute("menu", menu);
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
 		
-		List<DocumentoActualizar> lista = serviceDocumentos.buscarTodas();
-		model.addAttribute("documentos", lista);
+		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menu", menu);
+		
+		model.addAttribute("listaMenu", listaMenu);
+		// Se agregan el menú con sus submenus y sub-submenus
+		/*int size = 0, cont = 0;
+		
+		while(cont<listaMenu.size()) {
+			List<Menu> menu = lista
+			cont++;
+		}*/
+		
 		return "menu/menu";
 	}
 }
