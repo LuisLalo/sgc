@@ -9,10 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import edu.uabc.app.model.DocumentoActualizar;
 import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.UsuarioConsulta;
-import edu.uabc.app.service.IDocumentosActualizarService;
 import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
@@ -20,9 +18,6 @@ import edu.uabc.app.util.CrearMenu;
 @Controller
 @RequestMapping("menu")
 public class MenuController {
-
-	@Autowired
-	private IDocumentosActualizarService serviceDocumentos;
 	
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
@@ -44,15 +39,8 @@ public class MenuController {
 		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
 		model.addAttribute("menu", menu);
 		
+		System.out.println("listaMenu: " + listaMenu);
 		model.addAttribute("listaMenu", listaMenu);
-		// Se agregan el menú con sus submenus y sub-submenus
-		/*int size = 0, cont = 0;
-		
-		while(cont<listaMenu.size()) {
-			List<Menu> menu = lista
-			cont++;
-		}*/
-		
 		return "menu/menu";
 	}
 }

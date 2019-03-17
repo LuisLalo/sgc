@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <!--  Linea para agregar los íconos de las acciones-->
-<link rel="stylesheet" href="${ urlResources }/bootstrap3.7/css/glyphicons.css" rel="stylesheet">
+<link rel="stylesheet" href="${ urlResources }/bootstrap3.7/css/glyphicons.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 

@@ -14,7 +14,9 @@
 <spring:url value="/resources" var="urlResources"></spring:url>
 <spring:url value="/" var="urlRoot"></spring:url>
 <spring:url value="/usuarios/editar" var="urlEditar" />
-    <spring:url value="/usuarios/eliminar" var="urlEliminar" />
+<spring:url value="/usuarios/permisos" var="urlPermisos" />
+<spring:url value="/usuarios/restablecer" var="urlRestablecer" />
+<spring:url value="/usuarios/eliminar" var="urlEliminar" />
 <link rel="stylesheet" href="${ urlResources }/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/sgc/resources/css/bootstrap-4-navbar.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -72,11 +74,12 @@
                 </c:choose>
                 <td>
                     <a href="${ urlEditar }/${usuarios.num_empleado}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="${ urlPermisos }/${usuarios.num_empleado}" class="btn btn-success btn-sm" role="button" title="Permisos" ><span class="glyphicon glyphicon-th-list"></span></a>
+                    <a href="${ urlRestablecer }/${usuarios.num_empleado}" class="btn btn-success btn-sm" role="button" title="Restablecer Contraseña" ><span class=" glyphicon glyphicon-repeat"></span></a>
                     <a href="${ urlEliminar }/${usuarios.num_empleado}" onclick='return confirm("¿Estás seguro?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
             </c:forEach>
-          
            
         </table>
       </div>

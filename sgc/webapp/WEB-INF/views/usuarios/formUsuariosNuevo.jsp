@@ -121,6 +121,7 @@
 
         
         <button type="submit" class="btn btn-success" >Guardar</button>
+        <a class="btn btn-danger" href="${ urlRoot }usuarios/index" role="button">Cancelar</a>
       </form:form> 
 		
 	</div>

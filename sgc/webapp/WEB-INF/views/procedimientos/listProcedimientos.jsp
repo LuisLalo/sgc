@@ -12,11 +12,11 @@
 
 <spring:url value="/resources" var="urlResources"></spring:url>
 <spring:url value="/" var="urlRoot"></spring:url>
-<link href="${ urlResources }/bootstrap/css/mdb.min.css" rel="stylesheet">
+<link rel="stylesheet" href="${ urlResources }/bootstrap/css/mdb.min.css">
 <link rel="stylesheet" href="${ urlResources }/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/sgc/resources/css/bootstrap-4-navbar.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link href="${ urlResources }/bootstrap/css/theme.css" rel="stylesheet">
+<link rel="stylesheet" href="${ urlResources }/bootstrap/css/theme.css">
 
 <style>
 .contenedor {

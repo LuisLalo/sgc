@@ -21,8 +21,6 @@
 <spring:url value="/" var="urlRoot" />
 <spring:url value="/resources" var="urlResources"></spring:url>
 
-
-<br>
 ${ menu }
 
 
