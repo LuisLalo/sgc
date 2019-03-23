@@ -54,7 +54,10 @@ public class CrearMenu {
 		String dropdownItemSubSubMenuUltimo = "       						</ul>\r\n";
 	//	String dropdownItemSubSubMenuUltimoFin = "</ul>\r\n" + 
 	//			"								</li>\r\n";
-		String fin = "</ul></nav></div>";
+		String fin = "			</ul>\r\n"
+				+ "		</div>\r\n"
+				+ "	</nav>\r\n"
+				+ "</div>";
 		menuCompleto = comienzo;
 		for(int num=0;num<sizeListaMenu;num++) {
 			if(num!=0) {
@@ -75,11 +78,14 @@ public class CrearMenu {
 					// Se agregan los submenus
 					for(int cont=0;cont<sizeListaSubMenu;cont++) {
 						// Se identifica la relación del submenu con el menu
-						if(listaSubMenu.get(cont).getRelacion()==num+1) {
+						System.out.println("idMenu Menu: " + listaMenu.get(num).getIdMenu());
+						System.out.println("relacion subMenu: " + listaSubMenu.get(cont).getRelacion());
+						if(listaMenu.get(num).getIdMenu()==listaSubMenu.get(cont).getRelacion()) {
 							nombre = listaSubMenu.get(cont).getNombre();
 							liga = listaSubMenu.get(cont).getLiga();
 							
 							// Se identifica si el submenu tiene sub-submenu
+							System.out.println(listaSubMenu.get(cont).getIdSubmenu());
 							if(listaSubMenu.get(cont).getIdSubmenu()==1) {
 								// Se identifica si el submenu es el primero en la lista
 								if(contador==0) {

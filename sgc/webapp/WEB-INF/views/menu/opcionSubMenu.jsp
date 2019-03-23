@@ -1,5 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,44 +30,18 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Opciones de Menu</h3>
-		
+		<h3 class="text-center font-weight-bold">Opciones de la Sección ${ modelo.nombre }</h3>
+	
 		<c:if test="${ mensaje!=null }">
       		<div class="alert alert-success" role="alert">${ mensaje }</div>
         </c:if>
-      
+        
 		<!-- Button trigger modal -->
-		<a href="${ urlRoot }menu/crear" class="btn btn-success" role="button" title="Crear Nueva Opción de Menu">
-  			Nuevo Opción
+		<a href="${ urlRoot }menu/opcion/${ modelo.idMenu }/crear" class="btn btn-success" role="button" title="Crear Nueva Sección">
+  			Nueva Sección
 		</a>
 	
 		<br>
-		
-		<!-- Modal 
-		<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  			<div class="modal-dialog" role="document">
-    			<div class="modal-content">
-    				Header de la ventana
-      				<div class="modal-header">
-        				<h5 class="modal-title" id="exampleModalLongTitle">Generar Nueva Sección</h5>
-        				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          					<span aria-hidden="true">&times;</span>
-        				</button>
-      				</div>
-      				Contenido de la ventana
-      				<div class="modal-body">
-      				<p>Hola</p>	
-      					
-      					
-       				</div>
-        			Contenido del footer
-      				<div class="modal-footer">
-      					<button type="button" class="btn btn-success">Guardar</button>
-        				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-      				</div>
-    			</div>
-  			</div>
-		</div>-->
 		
 		<br>
 		
@@ -73,15 +49,15 @@
 		<div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
             <tr>
-                <th>Nombre de la Opción del Menu</th>
-                <th>Acciones</th>
+                <th>Nombre de la sección</th>
+                <th>Opciones</th>
             </tr>
-            <c:forEach var="listaMenu" items="${ listaMenu }">
+            <c:forEach var="listaSubMenuDos" items="${ listaSubMenuDos }">
             <tr>
-                <td>${ listaMenu.nombre }</td>
+                <td>${ listaSubMenuDos.nombre }</td>
                 <td>
-                    <a href="${ urlEditar }/${ listaMenu.idMenu }" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
-                    <a href="${ urlOpcion }/${ listaMenu.idMenu }" class="btn btn-success btn-sm" role="button" title="Editar Secciones"><span class="glyphicon glyphicon-th-list"></span></a>
+                    <a href="${ urlEditar }/${ listaSubMenuDos.idMenu }" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="${ urlOpcion }/${ listaSubMenuDos.idMenu }" class="btn btn-success btn-sm" role="button" title="Editar opciones"><span class="glyphicon glyphicon-th-list"></span></a>
 				</td>
 			</tr>                  
             </c:forEach>

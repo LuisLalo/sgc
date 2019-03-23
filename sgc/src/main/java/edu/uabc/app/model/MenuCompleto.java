@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="menu")
-public class Menu {
+public class MenuCompleto {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,9 +24,8 @@ public class Menu {
 	@Column(name="id_submenu")
 	private int idSubmenu;
 	private int relacion;
-	private int orden;
 	
-	public Menu() {
+	public MenuCompleto() {
 		
 	}
 
@@ -85,19 +84,11 @@ public class Menu {
 	public void setRelacion(int relacion) {
 		this.relacion = relacion;
 	}
-	
-	public int getOrden() {
-		return orden;
-	}
-
-	public void setOrden(int orden) {
-		this.orden = orden;
-	}
 
 	@Override
 	public String toString() {
-		return "Menu [idMenu=" + idMenu + ", nombre=" + nombre + ", liga=" + liga + ", idTipoVentana=" + idTipoVentana
-				+ ", idEstatus=" + idEstatus + ", idSubmenu=" + idSubmenu + ", relacion=" + relacion + ", orden="
-				+ orden + "]";
+		return "MenuCompleto [idMenu=" + idMenu + ", nombre=" + nombre + ", liga=" + liga + ", idTipoVentana="
+				+ idTipoVentana + ", idEstatus=" + idEstatus + ", idSubmenu=" + idSubmenu + ", relacion=" + relacion
+				+ "]";
 	}
 }

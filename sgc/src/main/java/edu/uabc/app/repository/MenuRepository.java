@@ -21,4 +21,13 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 	
 	// select * from Menu where id_estatus and id_tipo_ventana
 	List<Menu> findByIdEstatusAndIdTipoVentana(int idEstatus, int idTipoVentana);
+	
+	// select * from Menu where id_estatus and id_tipo_ventana order by orden
+	List<Menu> findByIdEstatusAndIdTipoVentanaOrderByOrden(int idEstatus, int idTipoVentana);
+	
+	// select * from Menu where id_estatus and relacion
+	List<Menu> findByIdEstatusAndIdTipoVentanaAndRelacion(int idEstatus, int idTipoVentana, int relacion);
+
+	// select * from Menu where id_estatus and relacion order by orden
+	List<Menu> findByIdEstatusAndIdTipoVentanaAndRelacionOrderByOrden(int idEstatus, int idTipoVentana, int relacion);
 }

@@ -44,12 +44,12 @@ public class HomeController {
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
 		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndTipoVentana(1, 2);
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
 		
-		String menu = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
-		model.addAttribute("menu", menu);
+		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menuCompleto", menuCompleto);
 		
 		for(GrantedAuthority rol: authentication.getAuthorities()) {
 			System.out.println("Rol: " + rol.getAuthority());
