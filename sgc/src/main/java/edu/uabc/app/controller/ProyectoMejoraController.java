@@ -111,9 +111,11 @@ public class ProyectoMejoraController {
 		model.addAttribute("provieneDe", listaProvieneDe);
 		List<TipoProyecto> listaTipoProyecto = serviceTiposProyectos.buscarTodas();
 		model.addAttribute("tipoProyecto", listaTipoProyecto);
-		List<UsuarioConsulta> listaUsuarios = serviceUsuariosConsulta.buscarTodas();
-		System.out.println("Usuarios: " + listaUsuarios);
-		model.addAttribute("responsable", listaUsuarios);
+		
+		//Se cambia el query para hacer la paginación
+		//List<UsuarioConsulta> listaUsuarios = serviceUsuariosConsulta.buscarTodas();
+		//System.out.println("Usuarios: " + listaUsuarios);
+		//model.addAttribute("responsable", listaUsuarios);
 		
 		
 		// Se identifica si el usuario tiene el rod de administrador del SGC para mostrarle el listado completo de los usuarios
@@ -123,8 +125,10 @@ public class ProyectoMejoraController {
 			System.out.println("Departamentos: " + listaDepartamento);
 			model.addAttribute("areaAplicacion", listaDepartamento);
 			model.addAttribute("areaResponsable", listaDepartamento);
-			List<UsuarioConsulta> listaUsuarioConsulta = serviceUsuariosConsulta.buscarTodas();
-			model.addAttribute("usuario", listaUsuarioConsulta);
+			
+			//Se cambia el query para hacer la paginación
+			//List<UsuarioConsulta> listaUsuarioConsulta = serviceUsuariosConsulta.buscarTodas();
+			//model.addAttribute("usuario", listaUsuarioConsulta);
 			return "proyecto_mejora/formProyectoMejora";
 		}
 		else {

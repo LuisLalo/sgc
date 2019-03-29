@@ -405,6 +405,14 @@ public class DocumentoController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		
+		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menuCompleto", menuCompleto);
+		
 		// Documentos a autorizar para el puesto de contador
 		if(usuarioAuth.getPuesto().getNombre().equals("Contador")) {
 			// Se buscan los departamentos que integran la Contaduría

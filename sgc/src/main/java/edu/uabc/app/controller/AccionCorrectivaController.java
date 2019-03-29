@@ -149,8 +149,9 @@ public class AccionCorrectivaController {
 			System.out.println("Se identificó que el  usuario es el administrador del SGC");
 			List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 			model.addAttribute("departamento", listaDepartamento);
-			List<UsuarioConsulta> listaUsuarioConsulta = serviceUsuariosConsulta.buscarTodas();
-			model.addAttribute("usuario", listaUsuarioConsulta);
+			// se comenta porque se cambió el query para hacer la paginación
+			//List<UsuarioConsulta> listaUsuarioConsulta = serviceUsuariosConsulta.buscarTodas();
+			//model.addAttribute("usuario", listaUsuarioConsulta);
 			return "accion_correctiva/formAccionCorrectivaAdministrador";
 		}
 		else {

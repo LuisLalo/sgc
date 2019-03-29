@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import edu.uabc.app.model.Departamento;
@@ -19,9 +21,8 @@ public class UsuariosConsultaServiceJPA implements IUsuariosConsultaService {
 	private UsuariosConsultaRepository usuariosRepo;
 	
 	@Override
-	public List<UsuarioConsulta> buscarTodas() {
-		List<UsuarioConsulta> lista = usuariosRepo.findBy();
-		return lista;
+	public Page<UsuarioConsulta> buscarTodas(Pageable page) {
+		return usuariosRepo.findAll(page);
 	}
 
 	@Override

@@ -3,11 +3,14 @@ package edu.uabc.app.controller;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.EstatusUsuario;
 import edu.uabc.app.model.Menu;
+import edu.uabc.app.model.Permiso;
+import edu.uabc.app.model.PermisoActualizar;
 import edu.uabc.app.model.Puesto;
 import edu.uabc.app.model.Rol;
 import edu.uabc.app.model.UsuarioActualizar;
@@ -30,10 +35,13 @@ import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IEstatusUsuarioService;
 import edu.uabc.app.service.IMenuService;
+import edu.uabc.app.service.IPermisoActualizarService;
+import edu.uabc.app.service.IPermisoService;
 import edu.uabc.app.service.IPuestosService;
 import edu.uabc.app.service.IRolesService;
 import edu.uabc.app.service.IUsuariosActualizarService;
 import edu.uabc.app.service.IUsuariosConsultaService;
+import edu.uabc.app.util.AsignarPermisos;
 import edu.uabc.app.util.CrearMenu;
 import edu.uabc.app.util.EnviarCorreo;
 
@@ -62,9 +70,15 @@ public class UsuariosController {
 	@Autowired
 	private IMenuService serviceMenu;
 	
-	@GetMapping("/index")
-	public String mostrarIndex(Authentication authentication, Model model) throws Exception {
-		List<UsuarioConsulta> lista = serviceUsuariosConsulta.buscarTodas();
+	@Autowired
+	private IPermisoService servicePermiso;
+	
+	@Autowired
+	private IPermisoActualizarService servicePermisoActualizar;
+	
+	@GetMapping("/indexPaginate")
+	public String mostrarIndexPaginado(Authentication authentication, Model model, Pageable page) throws Exception {
+		Page<UsuarioConsulta> lista = serviceUsuariosConsulta.buscarTodas(page);
 		System.out.println("Lista de usuarios: " + lista);
 		model.addAttribute("usuarios", lista);
 		
@@ -126,7 +140,14 @@ public class UsuariosController {
 		String hashedPassword = passwordEncoder.encode(usuario.getContrasena());
 		usuario.setContrasena(hashedPassword);
 		
+		// Se hace el guardado del usuario en la base de datos
 		serviceUsuariosActualizar.insertar(usuario);
+		
+		// Se buscan las opciones completas del menu
+		List<Menu> listaMenu = serviceMenu.buscarTodas();
+		
+		// Se asignan los permisos dependiendo del rol asignado
+		List<PermisoActualizar> lista = AsignarPermisos.asignarPermiso(usuario, listaMenu);
 		
 		attribute.addFlashAttribute("mensaje", "El registro fue guardado");
 		return "redirect:/usuarios/index";
@@ -166,5 +187,161 @@ public class UsuariosController {
 		serviceUsuariosActualizar.eliminar(num_empleado);
 		attributes.addFlashAttribute("mensaje", "El usuario fue eliminado");
 		return "redirect:/usuarios/index";
+	}
+	
+	@GetMapping(value="permisos/{id}")
+	public String permisos(@PathVariable("id") int numEmpleado, Authentication authentication, Model model) {
+		
+		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 2);
+		
+		// Se buscan los datos del usuario
+		UsuarioConsulta usuarioConsulta = serviceUsuariosConsulta.buscarPorId(numEmpleado);
+		model.addAttribute("usuarioConsulta", usuarioConsulta);
+		
+		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menuCompleto", menuCompleto);
+		
+		List<Permiso> lista = servicePermiso.buscarPorNumEmpleado(numEmpleado);
+		List<Permiso> listaPermiso = new ArrayList<Permiso>();
+		// Ciclo para identificar si el usuario tiene permisos para las secciones
+		int contador = 0;
+		for(int cont=0;cont<lista.size();cont++) {
+		//	System.out.println("Contador: " + cont);
+		//	System.out.println("Tamaño de la lista: " + lista.size());
+		//	System.out.println("Valor idTipoVentana: " + lista.get(cont).getMenu().getIdTipoVentana());
+		//	System.out.println("Valor lista: " + lista.get(cont));
+			// se identifica que la sección cumpla con idMenu y este activo
+			if(lista.get(contador).getMenu().getIdTipoVentana()==0) {
+				
+			//	System.out.println("Permiso: " + listaPermiso);
+				listaPermiso.add(cont, lista.get(cont));
+			//	System.out.println("Permiso 1: " + listaPermiso);
+				contador++;
+			}
+		}
+		
+		model.addAttribute("permiso", listaPermiso);
+		
+		System.out.println("Permiso: " + listaPermiso);
+		
+		return "usuarios/permisos";
+	}
+	
+	@GetMapping(value="permisos/{id}/seccion/{id1}")
+	public String modificarPermisos(@PathVariable("id") int numEmpleado, @PathVariable("id1") int idMenu, Authentication authentication, Model model) {
+		
+		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se buscan los datos del usuario
+		UsuarioConsulta usuarioConsulta = serviceUsuariosConsulta.buscarPorId(numEmpleado);
+		model.addAttribute("usuarioConsulta", usuarioConsulta);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 2);
+		
+		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menuCompleto", menuCompleto);
+		
+		// Se busca la opción del menu al que pertenecen las opciones
+		Menu menu = serviceMenu.buscarPorId(idMenu);
+		Permiso permiso = servicePermiso.buscarPorNumEmpleadoAndMenu(numEmpleado, menu);
+		model.addAttribute("permisoSeccion", permiso);
+		
+		// Se buscan los permisos del usuario
+		List<Permiso> lista = servicePermiso.buscarPorNumEmpleado(numEmpleado);
+		List<Permiso> listaPermiso = new ArrayList<Permiso>();
+		// Ciclo para identificar si el usuario tiene permisos para las secciones
+		int contador = 0;
+		for(int cont=0;cont<lista.size();cont++) {
+			System.out.println("Contador: " + cont);
+			System.out.println("Tamaño de la lista: " + lista.size());
+			System.out.println("Valor Relacion: " + lista.get(cont).getMenu().getRelacion());
+			System.out.println("Valor Relacion1: " + lista.get(contador).getMenu().getRelacion());
+			System.out.println("idMenu: " + idMenu);
+			System.out.println("Valor lista: " + lista.get(cont));
+			
+			// se identifica que la sección cumpla con idMenu y este activo
+			if(lista.get(cont).getMenu().getRelacion()==idMenu) {
+				
+				System.out.println("Permiso: " + listaPermiso);
+				listaPermiso.add(contador, lista.get(cont));
+				System.out.println("Permiso 1: " + listaPermiso);
+				contador++;
+			}
+		}
+		model.addAttribute("permiso", listaPermiso);
+		
+		return "usuarios/modificarPermisos";
+	}
+	
+	@GetMapping(value="permisos/{id}/cambiar/{id1}")
+	public String cambiarPermiso(@PathVariable("id") int numEmpleado, @PathVariable("id1") int idMenu, RedirectAttributes attributes) {
+		
+		attributes.addFlashAttribute("mensaje", "El permiso fue actualizado");
+		
+		Permiso permiso = servicePermiso.buscarPorIdPermisoAndNumEmpleado(idMenu, numEmpleado);
+		System.out.println("Permiso que se va a actualizar: " + permiso);
+		
+		// Se cambia el estatus dependiendo del valor almacenado en la base de datos
+		PermisoActualizar permisoActualizar = new PermisoActualizar();
+		//System.out.println("Valor permiso: " + permiso.getEstatusPermiso().getIdEstatus());
+		if(permiso.getEstatusPermiso().getIdEstatus()==0) {
+			permisoActualizar.setIdPermiso(idMenu);
+			permisoActualizar.setNumEmpleado(numEmpleado);
+			permisoActualizar.setIdMenu(permiso.getMenu().getIdMenu());
+			permisoActualizar.setIdEstatus(1);
+			//System.out.println("Valor permisoActualizar: " + permisoActualizar);
+		}
+		else if(permiso.getEstatusPermiso().getIdEstatus()==1) {
+			permisoActualizar.setIdPermiso(idMenu);
+			permisoActualizar.setNumEmpleado(numEmpleado);
+			permisoActualizar.setIdMenu(permiso.getMenu().getIdMenu());
+			permisoActualizar.setIdEstatus(0);
+		}
+		
+		// Se hace la actualización en la base de datos
+		servicePermisoActualizar.insertar(permisoActualizar);
+		
+		return "redirect:/usuarios/permisos/{id}";
+	}
+	
+	@GetMapping(value="permisos/{id}/cambiar/{id1}/seccion/{id2}")
+	public String cambiarPermisoIndividual(@PathVariable("id") int numEmpleado, @PathVariable("id1") int idMenu, @PathVariable("id2") int idMenu1, RedirectAttributes attributes) {
+		
+		attributes.addFlashAttribute("mensaje", "El permiso fue actualizado");
+		
+		Permiso permiso = servicePermiso.buscarPorIdPermisoAndNumEmpleado(idMenu1, numEmpleado);
+		System.out.println("Permiso que se va a actualizar: " + permiso);
+		
+		// Se cambia el estatus dependiendo del valor almacenado en la base de datos
+		PermisoActualizar permisoActualizar = new PermisoActualizar();
+		//System.out.println("Valor permiso: " + permiso.getEstatusPermiso().getIdEstatus());
+		if(permiso.getEstatusPermiso().getIdEstatus()==0) {
+			permisoActualizar.setIdPermiso(idMenu1);
+			permisoActualizar.setNumEmpleado(numEmpleado);
+			permisoActualizar.setIdMenu(permiso.getMenu().getIdMenu());
+			permisoActualizar.setIdEstatus(1);
+			//System.out.println("Valor permisoActualizar: " + permisoActualizar);
+		}
+		else if(permiso.getEstatusPermiso().getIdEstatus()==1) {
+			permisoActualizar.setIdPermiso(idMenu1);
+			permisoActualizar.setNumEmpleado(numEmpleado);
+			permisoActualizar.setIdMenu(permiso.getMenu().getIdMenu());
+			permisoActualizar.setIdEstatus(0);
+		}
+		
+		// Se hace la actualización en la base de datos
+		servicePermisoActualizar.insertar(permisoActualizar);
+		
+		return "redirect:/usuarios/permisos/{id}/seccion/{id1}";
 	}
 }

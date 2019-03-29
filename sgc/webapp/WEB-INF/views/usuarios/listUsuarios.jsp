@@ -13,6 +13,7 @@
 
 <spring:url value="/resources" var="urlResources"></spring:url>
 <spring:url value="/" var="urlRoot"></spring:url>
+<spring:url value="/usuarios" var="urlUsuarios" />
 <spring:url value="/usuarios/editar" var="urlEditar" />
 <spring:url value="/usuarios/permisos" var="urlPermisos" />
 <spring:url value="/usuarios/restablecer" var="urlRestablecer" />
@@ -36,7 +37,7 @@
 		<c:if test="${ mensaje!=null }">
       <div class="alert alert-success" role="alert">${ mensaje }</div>
       </c:if>
-      <button id="cargar" value="cargar">Cargar</button>
+      
       <div id="contenido">
         
     </div>
@@ -55,7 +56,7 @@
                 <th>Estatus</th>
                 <th>Opciones</th>
             </tr>
-            <c:forEach var="usuarios" items="${ usuarios }">
+            <c:forEach var="usuarios" items="${ usuarios.content }">
             <tr>
                 <td>${ usuarios.num_empleado }</td>
                 <td>${ usuarios.nombres }</td>
@@ -82,6 +83,17 @@
             </c:forEach>
            
         </table>
+        <!-- Se agregan los links de paginación después de la tabla -->
+        <nav aria-label="">
+        	<ul class="pager list-group list-group-horizontal">
+        		<li class="list-group-item">
+        			<a href="${ urlUsuarios }/indexPaginate?page=${ usuarios.number - 1 }" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Anterior</a>
+        		
+        			<a href="${ urlUsuarios }/indexPaginate?page=${ usuarios.number  + 1 }" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Siguiente</a>
+        		</li>
+        	</ul>
+        </nav>
+        
       </div>
 	</div>
 	
