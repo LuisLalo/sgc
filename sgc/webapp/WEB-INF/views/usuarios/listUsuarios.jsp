@@ -36,7 +36,7 @@
 		<c:if test="${ mensaje!=null }">
       <div class="alert alert-success" role="alert">${ mensaje }</div>
       </c:if>
-      <button id="cargar" value="cargar">Cargar</button>
+      
       <div id="contenido">
         
     </div>

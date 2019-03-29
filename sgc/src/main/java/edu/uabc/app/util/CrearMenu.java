@@ -78,14 +78,14 @@ public class CrearMenu {
 					// Se agregan los submenus
 					for(int cont=0;cont<sizeListaSubMenu;cont++) {
 						// Se identifica la relación del submenu con el menu
-						System.out.println("idMenu Menu: " + listaMenu.get(num).getIdMenu());
-						System.out.println("relacion subMenu: " + listaSubMenu.get(cont).getRelacion());
+					//	System.out.println("idMenu Menu: " + listaMenu.get(num).getIdMenu());
+					//	System.out.println("relacion subMenu: " + listaSubMenu.get(cont).getRelacion());
 						if(listaMenu.get(num).getIdMenu()==listaSubMenu.get(cont).getRelacion()) {
 							nombre = listaSubMenu.get(cont).getNombre();
 							liga = listaSubMenu.get(cont).getLiga();
 							
 							// Se identifica si el submenu tiene sub-submenu
-							System.out.println(listaSubMenu.get(cont).getIdSubmenu());
+						//	System.out.println(listaSubMenu.get(cont).getIdSubmenu());
 							if(listaSubMenu.get(cont).getIdSubmenu()==1) {
 								// Se identifica si el submenu es el primero en la lista
 								if(contador==0) {
@@ -99,8 +99,8 @@ public class CrearMenu {
 									// Se agrega el sub-submenu
 									for (int contUno=0;contUno<sizeListaSubSubMenu;contUno++) {
 										// Se identifica la relación del sub-submenu con el submenu
-										System.out.println(listaSubMenu.get(cont).getIdMenu());
-										System.out.println(listaSubSubMenu.get(contUno).getRelacion());
+									//	System.out.println(listaSubMenu.get(cont).getIdMenu());
+									//	System.out.println(listaSubSubMenu.get(contUno).getRelacion());
 										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getRelacion()) {
 											nombre = listaSubSubMenu.get(contUno).getNombre();
 											liga = listaSubSubMenu.get(contUno).getLiga();
@@ -131,8 +131,8 @@ public class CrearMenu {
 									// Se agrega el sub-submenu
 									for (int contUno=0;contUno<sizeListaSubSubMenu;contUno++) {
 										// Se identifica la relación del sub-submenu con el submenu
-										System.out.println("id subMenu:" + listaSubMenu.get(cont).getIdMenu());
-										System.out.println("id sub-submenu relación: " + listaSubSubMenu.get(contUno).getRelacion());
+								//		System.out.println("id subMenu:" + listaSubMenu.get(cont).getIdMenu());
+								//		System.out.println("id sub-submenu relación: " + listaSubSubMenu.get(contUno).getRelacion());
 										if(listaSubMenu.get(cont).getIdMenu()==listaSubSubMenu.get(contUno).getRelacion()) {
 											nombre = listaSubSubMenu.get(contUno).getNombre();
 											liga = listaSubSubMenu.get(contUno).getLiga();
@@ -203,7 +203,7 @@ public class CrearMenu {
 			}
 		}
 		menuCompleto = menuCompleto.concat(fin);
-		System.out.println("menuCompleto: " + menuCompleto);
+	//	System.out.println("menuCompleto: " + menuCompleto);
 		
 		return menuCompleto;
 	}
