@@ -3,20 +3,10 @@ package edu.uabc.app.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import edu.uabc.app.model.Menu;
 import edu.uabc.app.model.Permiso;
-import edu.uabc.app.service.IMenuService;
-import edu.uabc.app.service.IPermisoService;
 
 public class CrearMenu {
-	
-	@Autowired
-	private IPermisoService servicePermiso;
-
-	@Autowired
-	private IMenuService serviceMenu;
 	
 	public String generarMenu(int numEmpleado, List<Permiso> permiso, List<Menu> listaM, List<Menu> listaSM, List<Menu> listaSSM) {
 		System.out.println("numEmpleado dentro del método: "+ numEmpleado);
