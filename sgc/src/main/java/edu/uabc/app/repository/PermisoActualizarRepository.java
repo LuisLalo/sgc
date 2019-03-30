@@ -8,5 +8,6 @@ import edu.uabc.app.model.PermisoActualizar;
 @Repository
 public interface PermisoActualizarRepository extends JpaRepository<PermisoActualizar, Integer> {
 
-	
+	// select * from permiso where idPermiso
+	PermisoActualizar findByIdPermiso(int idPermiso);
 }

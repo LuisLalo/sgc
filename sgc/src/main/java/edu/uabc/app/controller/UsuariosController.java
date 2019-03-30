@@ -252,8 +252,13 @@ public class UsuariosController {
 		model.addAttribute("menuCompleto", menuCompleto);
 		
 		// Se busca la opción del menu al que pertenecen las opciones
-		Menu menu = serviceMenu.buscarPorId(idMenu);
+		PermisoActualizar permisoActualizar = servicePermisoActualizar.buscarPorIdPermiso(idMenu);
+		//System.out.println("idMenu: " + idMenu);
+		//System.out.println("permisoActualizar obtenido del base de datos: " + permisoActualizar);
+		Menu menu = serviceMenu.buscarPorId(permisoActualizar.getIdMenu());
+		//System.out.println("Menu obtenido del base de datos: " + menu);
 		Permiso permiso = servicePermiso.buscarPorNumEmpleadoAndMenu(numEmpleado, menu);
+		//System.out.println("Permiso obtenido del base de datos: " + permiso);
 		model.addAttribute("permisoSeccion", permiso);
 		
 		// Se buscan los permisos del usuario
@@ -270,7 +275,7 @@ public class UsuariosController {
 			System.out.println("Valor lista: " + lista.get(cont));
 			
 			// se identifica que la sección cumpla con idMenu y este activo
-			if(lista.get(cont).getMenu().getRelacion()==idMenu) {
+			if(lista.get(cont).getMenu().getRelacion()==permisoActualizar.getIdMenu()) {
 				
 				System.out.println("Permiso: " + listaPermiso);
 				listaPermiso.add(contador, lista.get(cont));

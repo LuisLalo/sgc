@@ -1,5 +1,6 @@
 package edu.uabc.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.uabc.app.model.Menu;
+import edu.uabc.app.model.Permiso;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IMenuService;
+import edu.uabc.app.service.IPermisoService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
@@ -24,6 +27,9 @@ public class HomeController {
 	
 	@Autowired
 	private IMenuService serviceMenu;
+	
+	@Autowired
+	private IPermisoService servicePermiso;
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String mostrarLogin() {
@@ -43,10 +49,50 @@ public class HomeController {
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		// Se buscan los permisos a los que puede acceder el usuario
+		List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+		System.out.println("Permiso: " + permiso);
+		
+		// Se buscan las opciones y secciones del menu generado por base de datos
+		List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		
+		// Se identifica que el usuario tenga permisos para ver las opciones del menu
+		List<Menu> listaMenu = new ArrayList<Menu>();
+		int conta = 0;
+		for(int contador=0;contador<listaM.size();contador++) {
+			for(int cont=0;cont<permiso.size();cont++) {
+				if((permiso.get(cont).getMenu().getIdMenu()==listaM.get(contador).getIdMenu()) && permiso.get(cont).getEstatusPermiso().getIdEstatus()==1){
+					listaMenu.add(conta, listaM.get(contador));
+					conta++;
+				}
+			}
+		}
+		
+		// Se identifica que el usuario tenga permisos para ver las opciones del submenu
+		List<Menu> listaSubMenu = new ArrayList<Menu>();
+		conta = 0;
+		for(int contador=0;contador<listaSM.size();contador++) {
+			for(int cont=0;cont<permiso.size();cont++) {
+				if((permiso.get(cont).getMenu().getIdMenu()==listaSM.get(contador).getIdMenu()) && permiso.get(cont).getEstatusPermiso().getIdEstatus()==1){
+					listaSubMenu.add(conta, listaSM.get(contador));
+					conta++;
+				}
+			}
+		}
+		
+		// Se identifica que el usuario tenga permisos para ver las opciones del subsubmenu
+		List<Menu> listaSubSubMenu = new ArrayList<Menu>();
+		conta = 0;
+		for(int contador=0;contador<listaSSM.size();contador++) {
+			for(int cont=0;cont<permiso.size();cont++) {
+				if((permiso.get(cont).getMenu().getIdMenu()==listaSSM.get(contador).getIdMenu()) && permiso.get(cont).getEstatusPermiso().getIdEstatus()==1){
+					listaSubSubMenu.add(conta, listaSSM.get(contador));
+					conta++;
+				}
+			}
+		}
 		
 		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
 		model.addAttribute("menuCompleto", menuCompleto);

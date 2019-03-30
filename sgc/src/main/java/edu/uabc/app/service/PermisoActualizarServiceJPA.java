@@ -17,4 +17,10 @@ public class PermisoActualizarServiceJPA implements IPermisoActualizarService{
 		permisoActualizarRepo.save(permisoActualizar);
 	}
 
+	@Override
+	public PermisoActualizar buscarPorIdPermiso(int idPermiso) {
+		PermisoActualizar permiso = permisoActualizarRepo.findByIdPermiso(idPermiso);
+		return permiso;
+	}
+
 }
