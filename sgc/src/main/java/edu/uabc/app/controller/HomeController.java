@@ -48,61 +48,26 @@ public class HomeController {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
 		
 		// Se buscan los permisos a los que puede acceder el usuario
 		List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
-		System.out.println("Permiso: " + permiso);
+		System.out.println("Permiso: "+ permiso);
 		
 		// Se buscan las opciones y secciones del menu generado por base de datos
 		List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
 		List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
 		List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
 		
-		// Se identifica que el usuario tenga permisos para ver las opciones del menu
-		List<Menu> listaMenu = new ArrayList<Menu>();
-		int conta = 0;
-		for(int contador=0;contador<listaM.size();contador++) {
-			for(int cont=0;cont<permiso.size();cont++) {
-				if((permiso.get(cont).getMenu().getIdMenu()==listaM.get(contador).getIdMenu()) && permiso.get(cont).getEstatusPermiso().getIdEstatus()==1){
-					listaMenu.add(conta, listaM.get(contador));
-					conta++;
-				}
-			}
-		}
-		
-		// Se identifica que el usuario tenga permisos para ver las opciones del submenu
-		List<Menu> listaSubMenu = new ArrayList<Menu>();
-		conta = 0;
-		for(int contador=0;contador<listaSM.size();contador++) {
-			for(int cont=0;cont<permiso.size();cont++) {
-				if((permiso.get(cont).getMenu().getIdMenu()==listaSM.get(contador).getIdMenu()) && permiso.get(cont).getEstatusPermiso().getIdEstatus()==1){
-					listaSubMenu.add(conta, listaSM.get(contador));
-					conta++;
-				}
-			}
-		}
-		
-		// Se identifica que el usuario tenga permisos para ver las opciones del subsubmenu
-		List<Menu> listaSubSubMenu = new ArrayList<Menu>();
-		conta = 0;
-		for(int contador=0;contador<listaSSM.size();contador++) {
-			for(int cont=0;cont<permiso.size();cont++) {
-				if((permiso.get(cont).getMenu().getIdMenu()==listaSSM.get(contador).getIdMenu()) && permiso.get(cont).getEstatusPermiso().getIdEstatus()==1){
-					listaSubSubMenu.add(conta, listaSSM.get(contador));
-					conta++;
-				}
-			}
-		}
-		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		// Se agrega el menu
+		CrearMenu crearMenu = new CrearMenu();
+		String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
 		model.addAttribute("menuCompleto", menuCompleto);
 		
 		for(GrantedAuthority rol: authentication.getAuthorities()) {
 			System.out.println("Rol: " + rol.getAuthority());
 			//System.out.println("Menu: " + listaMenu);
 		}
-		
-		
 		
 		return "home";
 	}
