@@ -16,7 +16,13 @@ public class AsignarPermisos {
 		switch(usuario.getId_rol()) {
 		case 1: 
 			// Permisos del Usuario General
-			
+			for(int cont=0;cont<menu.size();cont++) {
+				permiso.setIdPermiso(cont);
+				permiso.setNumEmpleado(usuario.getNum_empleado());
+				permiso.setIdMenu(menu.get(cont).getIdMenu());
+				permiso.setIdPermiso(1);
+				lista.add(cont, permiso);
+			}
 			break;
 		case 2: 
 			// Permisos del Administrador de Area
