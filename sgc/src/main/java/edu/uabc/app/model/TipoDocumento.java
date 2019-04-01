@@ -18,7 +18,7 @@ public class TipoDocumento {
 	private String nomenclatura;
 	private String imagen;
 	
-	private TipoDocumento() {
+	public TipoDocumento() {
 		
 	}
 

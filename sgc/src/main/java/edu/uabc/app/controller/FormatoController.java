@@ -22,8 +22,8 @@ import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
-@Controller
-@RequestMapping("/formatos")
+//@Controller
+//@RequestMapping("/formatos")
 public class FormatoController {
 
 	@Autowired
@@ -41,7 +41,7 @@ public class FormatoController {
 	@Autowired
 	private IMenuService serviceMenu;
 	
-	@GetMapping("/index")
+	//@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
@@ -60,7 +60,7 @@ public class FormatoController {
 		return "formatos/listFormatos";
 	}
 	
-	@GetMapping("/{id}")
+	//@GetMapping("/{id}")
 	public String mostrarFormatos(@PathVariable("id") int id_departamento, Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
