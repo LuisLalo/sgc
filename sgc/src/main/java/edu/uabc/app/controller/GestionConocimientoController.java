@@ -25,7 +25,7 @@ import edu.uabc.app.util.CrearMenu;
 @Controller
 @RequestMapping("/gestion_conocimiento")
 public class GestionConocimientoController {
-
+/*
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
 	
@@ -79,5 +79,5 @@ public class GestionConocimientoController {
 		List<DocumentoConsulta> documento = serviceDocumentosConsulta.buscarPorEstatusAndDepartamentoAndTipoDocumento(100, departamento, tipoDocumento);
 		model.addAttribute("documentos", documento);
 		return "gestion_conocimiento/listGestionConocimientoDepartamentos";
-	}
+	}*/
 }

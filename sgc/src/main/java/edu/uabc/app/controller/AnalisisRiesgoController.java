@@ -39,10 +39,10 @@ import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 import edu.uabc.app.util.Utileria;
 
-@Controller
-@RequestMapping("/analisis_riesgo")
+//@Controller
+//@RequestMapping("/analisis_riesgo")
 public class AnalisisRiesgoController {
-
+/*
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
 	
@@ -83,7 +83,7 @@ public class AnalisisRiesgoController {
 		System.out.println("Usuario listaUsuarioDocumentoConsulta: " + listaDocumento);
 		System.out.println("Paso 3");
 		model.addAttribute("documentos", listaDocumento);
-		System.out.println("Paso 4");*/
+		System.out.println("Paso 4");
 		
 		// Se agrega el menu generado por base de datos
 		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
@@ -234,5 +234,5 @@ public class AnalisisRiesgoController {
 		model.addAttribute("documentos", listaDocumento);
 		
 		return "/analisis_riesgo/listAnalisisRiesgoDepartamentos";
-	}
+	}*/
 }

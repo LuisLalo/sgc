@@ -38,4 +38,7 @@ public interface DocumentosConsultaRepository extends JpaRepository<DocumentoCon
 	
 	// select * from documento where departamento and tipo_documento
 	List<DocumentoConsulta> findByTipoDocumentoAndDepartamento(TipoDocumento tipoDocumento, Departamento departamento);
+	
+	// select * from documento where clasificador_documento and estatus
+	List<DocumentoConsulta> findByClasificadorDocumentoAndEstatus(int clasificadorDocumento, int estatus);
 }

@@ -90,4 +90,10 @@ public class DocumentosConsultaServiceJPA implements IDocumentosConsultaService 
 		List<DocumentoConsulta> lista = documentosConsultaRepo.findByTipoDocumentoAndDepartamento(tipoDocumento, departamento);
 		return lista;
 	}
+
+	@Override
+	public List<DocumentoConsulta> buscarPorClasificadorDocumentoAndEstatus(int clasificadorDocumento, int estatus) {
+		List<DocumentoConsulta> lista = documentosConsultaRepo.findByClasificadorDocumentoAndEstatus(clasificadorDocumento, estatus);
+		return lista;
+	}
 }

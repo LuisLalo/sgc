@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Página del Sistema de Gestión de Calidad del Patronato Universitario UABC">
     <meta name="author" content="Departamento de Apoyo Informático">
-
+	
     <title>UABC | Tesorería</title>
 	<spring:url value="/resources" var="urlResources"></spring:url>
 	<spring:url value="/" var="urlRoot"></spring:url>
 	<spring:url value="/documentos/guardar" var="urlForm"></spring:url>
-
+	<link rel="icon" href="${ urlResources }/images/favicon.png">
     <!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="${ urlResources }/bootstrap/css/bootstrap.min.css">
 

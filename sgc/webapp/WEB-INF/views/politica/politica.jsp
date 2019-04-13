@@ -25,7 +25,7 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-	<br>
+	
 		<h3 class="text-center font-weight-bold">Política de Calidad</h3>
 		<br>
 		<div class="container text-justify">

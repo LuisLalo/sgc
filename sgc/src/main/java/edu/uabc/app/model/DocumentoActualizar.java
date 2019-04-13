@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import edu.uabc.app.util.Utileria;
 
 @Entity
-@Table(name="documento_prov")
+@Table(name="documento")
 public class DocumentoActualizar {
 
 	@Id

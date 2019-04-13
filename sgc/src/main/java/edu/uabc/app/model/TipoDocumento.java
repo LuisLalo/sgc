@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tipo_documento_prov")
+@Table(name="tipo_documento")
 public class TipoDocumento {
 
 	@Id

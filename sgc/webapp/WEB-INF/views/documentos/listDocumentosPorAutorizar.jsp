@@ -45,7 +45,7 @@
                 <th>Fecha de Creación</th>
                 <th>Clasificación</th>
                 <th>Departamento</th>
-                <th>Estatus</th>
+              <!--    <th>Estatus</th>-->
                 <th>Opciones</th>
             </tr>
             <c:forEach var="documentos" items="${ documentos }">
@@ -55,18 +55,20 @@
                 <td>${ documentos.fecha_creacion }</td>
                 <td>${ documentos.tipoDocumento.nombre }</td>
                 <td>${ documentos.departamento.nombre }</td>
-                <c:choose>
+           <!--      <c:choose>
                 	<c:when test="${ documentos.estatus eq '1'}">
-                		<td><span class="badge badge-success">${ documentos.estatus }</span></td><td>
+                		<td><span class="badge badge-success">${ documentos.estatus }</span></td>
                 	</c:when>
                 	<c:otherwise>
-                		<td><span class="badge badge-danger">${ documentos.estatus }</span></td><td>
+                		<td><span class="badge badge-danger">${ documentos.estatus }</span></td>
                 	</c:otherwise>
-                </c:choose>
+                </c:choose> -->
+                <td>
                     <a href="${ urlAutorizar }/editar/${documentos.idDocumento}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
                     <a href="${ urlAutorizar }/${documentos.idDocumento}" onclick='return confirm("¿Estás seguro que deseas aprobar este documento?")' class="btn btn-success btn-sm" role="button" title="Aprobar" ><span class="glyphicon glyphicon-ok"></span></a>
                     <a href="${ urlDevolver }/${documentos.idDocumento}" onclick='return confirm("¿Estás seguro que deseas devolver este documento?")' class="btn btn-danger btn-sm" role="button" title="Devolver" ><span class="glyphicon glyphicon-repeat"></span></a>
                     <a href="${ urlEliminar }/${documentos.idDocumento}" onclick='return confirm("¿Estás seguro que deseas eliminar este documento?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
             </tr>
             </c:forEach>
           

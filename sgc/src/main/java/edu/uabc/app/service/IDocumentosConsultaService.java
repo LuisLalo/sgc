@@ -19,4 +19,5 @@ public interface IDocumentosConsultaService {
 	List<DocumentoConsulta> buscarPorEstatusAndDepartamentoAndTipoDocumentoOrdenadoPorOrdenDocumento(int estatus, Departamento departamento, TipoDocumento tipoDocumento);
 	List<DocumentoConsulta> buscarPorTipoDocumento(TipoDocumento tipoDocumento);
 	List<DocumentoConsulta> buscarPorTipoDocumentoAndDepartamento(TipoDocumento tipoDocumento, Departamento departamento);
+	List<DocumentoConsulta> buscarPorClasificadorDocumentoAndEstatus(int clasificadorDocumento, int estatus);
 }

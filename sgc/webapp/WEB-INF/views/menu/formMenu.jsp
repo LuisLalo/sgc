@@ -28,7 +28,7 @@
 	<div class="container">
 		
 		<br>
-		<h3 class="text-center font-weight-bold">Datos de la Opción del Menu prueba</h3>
+		<h3 class="text-center font-weight-bold">Nueva Opción de Menu</h3>
 		<br>
 			
 	<spring:hasBindErrors name="usuario">
@@ -51,19 +51,20 @@
               <form:hidden id="idTipoVentana" path="idTipoVentana" class="form-control" />
               <form:hidden id="relacion" path="relacion" class="form-control" />
               <form:hidden id="liga" path="liga" class="form-control" />
+              <form:hidden id="orden" path="orden" class="form-control" />
+              <form:hidden id="idClasificadorDocumento" path="idClasificadorDocumento" class="form-control" />
+              <form:hidden id="idSubmenu" path="idSubmenu" class="form-control" />
               <form:input type="text" class="form-control" path="nombre" id="nombre" required="required" />
             </div>  
           </div>
           <div class="col-sm-3">
             <div class="form-group">
-              <label for="contrasena">Estatus</label>
-              <form:input type="text" class="form-control" path="idEstatus" id="idEstatus" required="required" />
-            </div>  
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group">
-              <label for="contrasena">Sección</label>
-              <form:input type="text" class="form-control" path="idSubmenu" id="idSubmenu" required="required" />
+              <label for="estatus">Estatus</label>
+              <form:select id="estatus" path="idEstatus" class="form-control" >
+                <c:forEach var="estatusMenu" items="${ estatusMenu }">
+                	<form:option value="${ estatusMenu.idEstatus }">${ estatusMenu.nombre }</form:option>
+                </c:forEach>
+              </form:select>
             </div>  
           </div>
         </div>

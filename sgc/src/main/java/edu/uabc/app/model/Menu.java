@@ -25,6 +25,8 @@ public class Menu {
 	private int idSubmenu;
 	private int relacion;
 	private int orden;
+	@Column(name="id_clasificador_documento")
+	private int idClasificadorDocumento;
 	
 	public Menu() {
 		
@@ -94,10 +96,18 @@ public class Menu {
 		this.orden = orden;
 	}
 
+	public int getIdClasificadorDocumento() {
+		return idClasificadorDocumento;
+	}
+
+	public void setIdClasificadorDocumento(int idClasificadorDocumento) {
+		this.idClasificadorDocumento = idClasificadorDocumento;
+	}
+
 	@Override
 	public String toString() {
 		return "Menu [idMenu=" + idMenu + ", nombre=" + nombre + ", liga=" + liga + ", idTipoVentana=" + idTipoVentana
 				+ ", idEstatus=" + idEstatus + ", idSubmenu=" + idSubmenu + ", relacion=" + relacion + ", orden="
-				+ orden + "]";
+				+ orden + ", idClasificadorDocumento=" + idClasificadorDocumento + "]";
 	}
 }

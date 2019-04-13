@@ -39,5 +39,4 @@ public class PermisoServiceJPA implements IPermisoService{
 		Permiso permiso = permisoRepo.findByNumEmpleadoAndMenu(numEmpleado, menu);
 		return permiso;
 	}
-
 }

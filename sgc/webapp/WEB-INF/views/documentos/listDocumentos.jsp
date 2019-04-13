@@ -44,7 +44,7 @@
                 <th>Descripción</th>
                 <th>Fecha de Creación</th>
                 <th>Clasificación</th>
-                <th>Estatus</th>
+              <!--   <th>Estatus</th> -->
                 <th>Opciones</th>
             </tr>
             <c:forEach var="documentos" items="${ documentos }">
@@ -53,16 +53,18 @@
                 <td>${ documentos.documento.descripcion }</td>
                 <td>${ documentos.documento.fecha_creacion }</td>
                 <td>${ documentos.documento.tipoDocumento.nombre }</td>
-                <c:choose>
+             <!--    <c:choose>
                 	<c:when test="${ documentos.documento.estatus eq '0'}">
-                		<td><span class="badge badge-success">${ documentos.documento.estatus }</span></td><td>
+                		<td><span class="badge badge-success">${ documentos.documento.estatus }</span></td>
                 	</c:when>
                 	<c:otherwise>
-                		<td><span class="badge badge-danger">${ documentos.documento.estatus }</span></td><td>
+                		<td><span class="badge badge-danger">${ documentos.documento.estatus }</span></td>
                 	</c:otherwise>
-                </c:choose>
+                </c:choose> -->
+                <td>
                     <a href="${ urlEditar }/${documentos.documento.idDocumento}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
                     <a href="${ urlEliminar }/${documentos.documento.idDocumento}" onclick='return confirm("¿Estás seguro que deseas eliminar este documento?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
             </tr>
             </c:forEach>
           

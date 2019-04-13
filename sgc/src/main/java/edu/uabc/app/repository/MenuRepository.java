@@ -1,6 +1,7 @@
 package edu.uabc.app.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -30,4 +31,12 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
 	// select * from Menu where id_estatus and relacion order by orden
 	List<Menu> findByIdEstatusAndIdTipoVentanaAndRelacionOrderByOrden(int idEstatus, int idTipoVentana, int relacion);
+	
+	// select * from Menu where liga
+	Menu findByLiga(String liga);
+	
+	// select * from Menu where id_tipo_ventana order by orden
+	List<Menu> findByIdTipoVentanaOrderByOrden(int idTipoVentana);
+	
+	
 }

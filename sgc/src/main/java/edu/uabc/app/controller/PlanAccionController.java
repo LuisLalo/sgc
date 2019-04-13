@@ -22,10 +22,10 @@ import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
-@Controller
-@RequestMapping("/plan_accion")
+//@Controller
+//@RequestMapping("/plan_accion")
 public class PlanAccionController {
-
+/*
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
 	
@@ -75,5 +75,5 @@ public class PlanAccionController {
 		model.addAttribute("documentos", listaDocumento);
 		
 		return "/plan_accion/listPlanAccionDepartamentos";
-	}
+	}*/
 }

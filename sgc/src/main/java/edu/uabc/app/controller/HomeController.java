@@ -172,7 +172,7 @@ public class HomeController {
 		
 		return vista;
 	}*/
-	
+	/*
 	@RequestMapping(value="/documentos-autorizar", method=RequestMethod.GET)
 	public String mostrarDocumentosAutorizar() {
 		return "documentos-autorizar";
@@ -181,7 +181,7 @@ public class HomeController {
 	@RequestMapping(value="/menu", method=RequestMethod.GET)
 	public String mostrarMenu() {
 		return "menu";
-	}
+	}*/
 	
 	@RequestMapping(value="/alta-capacitacion", method=RequestMethod.GET)
 	public String mostrarAltaCapacitacion() {

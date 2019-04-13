@@ -43,10 +43,10 @@ import edu.uabc.app.service.ITiposProyectosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
-@Controller
-@RequestMapping("proyecto_mejora")
+//@Controller
+//@RequestMapping("proyecto_mejora")
 public class ProyectoMejoraController {
-	
+	/*
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
 	
@@ -82,9 +82,9 @@ public class ProyectoMejoraController {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
-		/*
+		
 		List<ProyectoMejora> listaProyectoMejora = serviceProyectoMejora.buscarTodas();
-		model.addAttribute("proyectoMejora", listaProyectoMejora);*/
+		model.addAttribute("proyectoMejora", listaProyectoMejora);
 		
 		// Se agrega el menu generado por base de datos
 		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
@@ -226,5 +226,5 @@ public class ProyectoMejoraController {
 		model.addAttribute("documentos", listaDocumento);
 		
 		return "/proyecto_mejora/listProyectoMejoraDepartamentos";
-	}
+	}*/
 }

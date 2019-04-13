@@ -57,7 +57,11 @@
           <div class="col-sm-3">
             <div class="form-group">
               <label for="estatus">Estatus</label>
-              <form:input type="text" class="form-control" path="idEstatus" id="idEstatus" required="required" />
+              <form:select id="estatus" path="idEstatus" class="form-control" >
+                <c:forEach var="estatusMenu" items="${ estatusMenu }">
+                	<form:option value="${ estatusMenu.idEstatus }">${ estatusMenu.nombre }</form:option>
+                </c:forEach>
+              </form:select>
             </div>  
           </div>
           <div class="col-sm-3">

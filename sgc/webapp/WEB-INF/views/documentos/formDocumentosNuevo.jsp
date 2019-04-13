@@ -27,7 +27,7 @@
 	
 	<div class="container">
 		
-		<br>
+		
 		<h3 class="text-center font-weight-bold">Datos del Documento</h3>
 		<br>
 			

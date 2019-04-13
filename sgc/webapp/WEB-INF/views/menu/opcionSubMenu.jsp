@@ -57,7 +57,7 @@
                 <td>${ listaSubMenuDos.nombre }</td>
                 <td>
                     <a href="${ urlEditar }/${ listaSubMenuDos.idMenu }" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
-                    <a href="${ urlOpcion }/${ listaSubMenuDos.idMenu }" class="btn btn-success btn-sm" role="button" title="Editar opciones"><span class="glyphicon glyphicon-th-list"></span></a>
+                    <a href="${ urlOpcion }/${ listaSubMenuDos.idMenu }/seccion" class="btn btn-success btn-sm" role="button" title="Editar opciones"><span class="glyphicon glyphicon-th-list"></span></a>
 				</td>
 			</tr>                  
             </c:forEach>

@@ -19,4 +19,5 @@ public interface IUsuariosConsultaService {
 	UsuarioConsulta buscarPorPuesto(Puesto puesto);
 	UsuarioConsulta buscarPorRol(Rol rol);
 	UsuarioConsulta buscarPorCorreo(String correo);
+	List<UsuarioConsulta> buscaTodo();
 }

@@ -1,7 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,77 +12,41 @@
 
 <spring:url value="/resources" var="urlResources"></spring:url>
 <spring:url value="/" var="urlRoot"></spring:url>
-<link href="${ urlResources }/bootstrap/css/mdb.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${ urlResources }/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/sgc/resources/css/bootstrap-4-navbar.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link href="${ urlResources }/bootstrap/css/theme.css" rel="stylesheet">
 
-<style>
-.contenedor {
-	position: relative;
-	display: inline-block;
-	text-align: center;
-}
-
-.texto-encima {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-}
-
-.centrado {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-</style>
+<!--  Linea para agregar los íconos de las acciones-->
+<link rel="stylesheet" href="${ urlResources }/bootstrap3.7/css/glyphicons.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 
 <body>
 	
 	<jsp:include page="../includes/header.jsp"></jsp:include>
-	
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$(document).on('mouseenter', '.contenedor', function() {
-				$(this).find(":button").show();
 
-			}).on('mouseleave', '.contenedor', function() {
-				$(this).find(":button").hide();
-
-			});
-		});
-	</script>
-	
 	<div class="container">
-		<h2 class="text-center font-weight-bold">Documentos Varios</h2>
-	
-	<c:if test="${ mensaje!=null }">
-          <div class="alert alert-success" role="alert">${ mensaje }</div>
-    </c:if>
-      
-    
-	
-	<br>
-
-		<div class="row">
-			<c:forEach var="departamentos" items="${departamentos}">
-				<div class="col-xs-12 col-sm-6 col-md-3">
-				<div class="contenedor">
-					<div class="view overlay">
-						<img src="${ urlResources }/images/${departamentos.imagen}" alt="..."  class="img-fluid img-rounded" onmouseover="enfoque(this)"onmouseout="noenfoque(this)">
-						<div class="mask flex-center waves-effect waves-light rgba-white-strong">
-							<form method="get" action="${ urlRoot }procedimientos/${ departamentos.ruta}/${departamentos.id_departamento}">
-								<button type="submit" class="btn btn-success" style="display: none">Ir</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			</c:forEach>
-		</div>
+		<h3 class="text-center font-weight-bold"> ${ clasificadorDocumento.nombre }</h3>
+		<br>
+	<div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered">
+            <tr>
+                <th>Nombre del Formato</th>
+                <th>Descripción</th>
+                <th>Opciones</th>
+            </tr>
+            <c:forEach var="documentos" items="${ documentos }">
+            <tr>
+                <td>${ documentos.nombre }</td>
+                <td>${ documentos.descripcion }</td>
+                <td>
+                    <a href="${ urlResources }/docs/${documentos.tipoDocumento.ruta}/${ tipoDocumento.departamentos.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+				</td>
+			</tr>                  
+            </c:forEach>
+        </table>
+      </div>
+		
 	</div>
 	<jsp:include page="../includes/footer.jsp"></jsp:include>
 	
@@ -93,6 +55,5 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<script src="${ urlResources }/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/sgc/resources/js/bootstrap-4-navbar.js"></script>
-	
+
 </body>
-</html>

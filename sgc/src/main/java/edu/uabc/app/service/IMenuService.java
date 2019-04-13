@@ -1,6 +1,7 @@
 package edu.uabc.app.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import edu.uabc.app.model.Menu;
 
@@ -15,4 +16,7 @@ public interface IMenuService {
 	Menu buscarPorId(int idMenu);
 	List<Menu> buscarPorEstatusAndIdTipoVentanaOrderByOrden(int idEstatus, int idTipoVentana);
 	List<Menu> buscarPorEstatusAndIdTipoVentanaAndRelacionOrderByOrden(int idEstatus, int idTipoVentana, int relacion);
+	Menu buscarPorLiga(String liga);
+	List<Menu> buscarPorIdTipoVentana(int idTipoVentana);
+	
 }

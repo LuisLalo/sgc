@@ -22,7 +22,7 @@ import edu.uabc.app.model.TipoDocumento;
 
 public class Utileria {
 	
-	public static String guardarDocumento(MultipartFile multiPart, HttpServletRequest request, String tipoDocumento, String departamento, String extension) {
+	public static String guardarDocumento(MultipartFile multiPart, HttpServletRequest request, String tipoDocumento, String departamento, String extension) throws IOException {
 		
 		//Se obtiene el nombre del archivo
 		String nombreArchivo = multiPart.getOriginalFilename();
@@ -33,6 +33,9 @@ public class Utileria {
 		// Obtenemos la ruta ABSOLUTA del directorio images
 		// Apache-tomcat/webapps/sgc/resources/docs/
 		String rutaFinal = request.getServletContext().getRealPath("/resources/docs/"+tipoDocumento+"/"+departamento+"/");
+		Log log = new Log();
+		log.write(rutaFinal);
+		//String rutaFinal = "/home/administrator/docs/";
 		//String rutaFinal = "C:/spring-workspace/sgc/webapp/resources/docs/"+tipoDocumento+"/"+departamento+"/";
 		System.out.println("Ruta final: " + rutaFinal);
 		System.out.println("Nombre final: " + nombreArchivo);

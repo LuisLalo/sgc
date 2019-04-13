@@ -69,4 +69,10 @@ public class UsuariosConsultaServiceJPA implements IUsuariosConsultaService {
 		UsuarioConsulta usuario = usuariosRepo.findByCorreo(correo);
 		return usuario;
 	}
+
+	@Override
+	public List<UsuarioConsulta> buscaTodo() {
+		List<UsuarioConsulta> usuario = usuariosRepo.findAll();
+		return usuario;
+	}
 }

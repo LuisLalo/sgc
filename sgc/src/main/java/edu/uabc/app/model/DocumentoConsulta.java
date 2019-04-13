@@ -17,7 +17,7 @@ import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.Departamento;
 
 @Entity
-@Table(name="documento_prov")
+@Table(name="documento")
 public class DocumentoConsulta {
 
 	@Id

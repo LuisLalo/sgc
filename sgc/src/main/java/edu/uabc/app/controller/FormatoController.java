@@ -21,7 +21,7 @@ import edu.uabc.app.service.IMenuService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
-
+/*
 //@Controller
 //@RequestMapping("/formatos")
 public class FormatoController {
@@ -86,4 +86,4 @@ public class FormatoController {
 		model.addAttribute("documentos", documento);
 		return "formatos/listFormatosDepartamentos";
 	}
-}
+}*/

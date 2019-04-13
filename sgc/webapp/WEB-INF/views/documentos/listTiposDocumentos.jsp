@@ -60,6 +60,10 @@
 	<!-- 	<h2 class="text-center font-weight-bold">Documentos</h2> -->
 		<br>
 		
+		<c:if test="${ mensaje!=null }">
+      	<div class="alert alert-success" role="alert">${ mensaje }</div>
+      </c:if>
+		
 		<div class="row">
 			<c:forEach var="tipoDocumento" items="${tipoDocumento}">
 				<div class="col-xs-12 col-sm-6 col-md-3">

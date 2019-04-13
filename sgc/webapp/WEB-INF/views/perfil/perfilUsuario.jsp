@@ -30,7 +30,7 @@
 				</p>
 				<p class="text-center">${ usuarioAuth.nombres } ${ usuarioAuth.apellidos }<br />
 				${ usuarioAuth.correo }</p>
-				<a href="${ urlRoot }perfil/cambiar_contrasena" class="btn btn-outline-success btn-block" role="button" title="Cambiar Contraseña" >Cambiar Contraseña</a><br><br>
+				<a href="${ urlRoot }perfil/cambiar_contrasena" class="btn btn-outline-success" role="button" title="Cambiar Contraseña" >Cambiar Contraseña</a><br><br>
 				
 				<br>
 				<h5 class="text-center">Archivos Recientes:</h5>

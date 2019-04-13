@@ -39,10 +39,10 @@ import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 import edu.uabc.app.util.Utileria;
 
-@Controller
-@RequestMapping("/analisis_foda")
+//@Controller
+//@RequestMapping("/analisis_foda")
 public class AnalisisFodaController {
-
+/*
 	@Autowired
 	private IDepartamentosService serviceDepartamentos;
 	
@@ -91,7 +91,7 @@ public class AnalisisFodaController {
 		System.out.println("Usuario listaUsuarioDocumentoConsulta: " + listaDocumento);
 
 		model.addAttribute("documentos", listaDocumento);
-		*/
+		
 		
 		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamento);
@@ -233,5 +233,5 @@ public class AnalisisFodaController {
 		model.addAttribute("documentos", listaDocumento);
 		
 		return "analisis_foda/listAnalisisFodaDepartamentos";
-	}
+	}*/
 }

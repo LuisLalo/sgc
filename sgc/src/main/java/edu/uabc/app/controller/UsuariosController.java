@@ -82,15 +82,23 @@ public class UsuariosController {
 		System.out.println("Lista de usuarios: " + lista);
 		model.addAttribute("usuarios", lista);
 		
+		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
 		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		// Se buscan los permisos a los que puede acceder el usuario
+		List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+		System.out.println("Permiso: "+ permiso);
 		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		// Se buscan las opciones y secciones del menu generado por base de datos
+		List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		
+		// Se agrega el menu
+		CrearMenu crearMenu = new CrearMenu();
+		String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
 		model.addAttribute("menuCompleto", menuCompleto);
 		
 		// Se envía correo con la notificación al usuario
@@ -189,39 +197,43 @@ public class UsuariosController {
 		return "redirect:/usuarios/index";
 	}
 	
+	// Controladores de los permisos a las secciones a los que tiene acceso el usuario
 	@GetMapping(value="permisos/{id}")
 	public String permisos(@PathVariable("id") int numEmpleado, Authentication authentication, Model model) {
-		
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
-		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 2);
-		
-		// Se buscan los datos del usuario
-		UsuarioConsulta usuarioConsulta = serviceUsuariosConsulta.buscarPorId(numEmpleado);
-		model.addAttribute("usuarioConsulta", usuarioConsulta);
-		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
-		model.addAttribute("menuCompleto", menuCompleto);
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 		
 		List<Permiso> lista = servicePermiso.buscarPorNumEmpleado(numEmpleado);
 		List<Permiso> listaPermiso = new ArrayList<Permiso>();
 		// Ciclo para identificar si el usuario tiene permisos para las secciones
 		int contador = 0;
 		for(int cont=0;cont<lista.size();cont++) {
-		//	System.out.println("Contador: " + cont);
-		//	System.out.println("Tamaño de la lista: " + lista.size());
-		//	System.out.println("Valor idTipoVentana: " + lista.get(cont).getMenu().getIdTipoVentana());
-		//	System.out.println("Valor lista: " + lista.get(cont));
+			System.out.println("Contador: " + cont);
+			System.out.println("Tamaño de la lista: " + lista.size());
+		System.out.println("Valor idTipoVentana: " + lista.get(cont).getMenu().getIdTipoVentana());
+			System.out.println("Valor lista: " + lista.get(cont));
 			// se identifica que la sección cumpla con idMenu y este activo
-			if(lista.get(contador).getMenu().getIdTipoVentana()==0) {
+			if(lista.get(cont).getMenu().getIdTipoVentana()==0) {
 				
-			//	System.out.println("Permiso: " + listaPermiso);
-				listaPermiso.add(cont, lista.get(cont));
-			//	System.out.println("Permiso 1: " + listaPermiso);
+				System.out.println("Permiso: " + listaPermiso);
+				listaPermiso.add(contador, lista.get(cont));
+				System.out.println("Permiso 1: " + listaPermiso);
 				contador++;
 			}
 		}
@@ -235,7 +247,7 @@ public class UsuariosController {
 	
 	@GetMapping(value="permisos/{id}/seccion/{id1}")
 	public String modificarPermisos(@PathVariable("id") int numEmpleado, @PathVariable("id1") int idMenu, Authentication authentication, Model model) {
-		
+		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
@@ -348,5 +360,65 @@ public class UsuariosController {
 		servicePermisoActualizar.insertar(permisoActualizar);
 		
 		return "redirect:/usuarios/permisos/{id}/seccion/{id1}";
+	}
+	
+	@GetMapping(value="permisos/{id}/seccion/{id1}/seccion/{id2}")
+	public String modificarPermisoIndividual(@PathVariable("id") int numEmpleado, @PathVariable("id1") int idMenu, @PathVariable("id2") int idMenu1, RedirectAttributes attributes, Model model, Authentication authentication) {
+		
+		attributes.addFlashAttribute("mensaje", "El permiso fue actualizado");
+		
+		
+		// Se agrega el nombre del usuario
+		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+		model.addAttribute("usuarioAuth", usuarioAuth);
+		
+		// Se buscan los datos del usuario
+		UsuarioConsulta usuarioConsulta = serviceUsuariosConsulta.buscarPorId(numEmpleado);
+		model.addAttribute("usuarioConsulta", usuarioConsulta);
+		
+		// Se agrega el menu generado por base de datos
+		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 0);
+		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 1);
+		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentana(1, 2);
+		
+		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		model.addAttribute("menuCompleto", menuCompleto);
+		
+		// Se busca la opción del menu al que pertenecen las opciones
+		PermisoActualizar permisoActualizar = servicePermisoActualizar.buscarPorIdPermiso(idMenu1);
+		System.out.println("idMenu1: " + idMenu1);
+		//System.out.println("permisoActualizar obtenido del base de datos: " + permisoActualizar);
+		Menu menu = serviceMenu.buscarPorId(permisoActualizar.getIdMenu());
+		System.out.println("Menu obtenido del base de datos: " + menu);
+		Permiso permiso = servicePermiso.buscarPorNumEmpleadoAndMenu(numEmpleado, menu);
+		System.out.println("Permiso obtenido del base de datos: " + permiso);
+		model.addAttribute("permisoSeccion", permiso);
+		
+		// Se buscan los permisos del usuario
+		List<Permiso> lista = servicePermiso.buscarPorNumEmpleado(numEmpleado);
+		List<Permiso> listaPermiso = new ArrayList<Permiso>();
+		// Ciclo para identificar si el usuario tiene permisos para las secciones
+		int contador = 0;
+		for(int cont=0;cont<lista.size();cont++) {
+			System.out.println("Contador: " + cont);
+			System.out.println("Tamaño de la lista: " + lista.size());
+			System.out.println("Valor Relacion: " + lista.get(cont).getMenu().getRelacion());
+			System.out.println("Valor Relacion1: " + permisoActualizar.getIdMenu());
+			System.out.println("idMenu: " + idMenu1);
+			System.out.println("Valor lista: " + lista.get(cont));
+			
+			// se identifica que la sección cumpla con idMenu y este activo
+			if(lista.get(cont).getMenu().getRelacion()==permisoActualizar.getIdMenu()) {
+				
+				System.out.println("Permiso: " + listaPermiso);
+				listaPermiso.add(contador, lista.get(cont));
+				System.out.println("Permiso 1: " + listaPermiso);
+				contador++;
+			}
+		}
+		
+		model.addAttribute("permiso", listaPermiso);
+		
+		return "usuarios/modificarSubPermisos";
 	}
 }

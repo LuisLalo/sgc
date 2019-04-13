@@ -13,17 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.DocumentoConsulta;
 import edu.uabc.app.model.Menu;
+import edu.uabc.app.model.Permiso;
 import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IDocumentosConsultaService;
 import edu.uabc.app.service.IMenuService;
+import edu.uabc.app.service.IPermisoService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
 @Controller
-@RequestMapping("/programa_actividades")
+@RequestMapping("/programa_de_actividades")
 public class ProgramaActividadesController {
 
 	@Autowired
@@ -41,24 +43,36 @@ public class ProgramaActividadesController {
 	@Autowired
 	private IMenuService serviceMenu;
 	
+	@Autowired
+	private IPermisoService servicePermiso;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Authentication authentication, Model model) {
+		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		System.out.println("usuarioAuth: " + usuarioAuth);
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
 		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		// Se buscan los permisos a los que puede acceder el usuario
+		List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+		System.out.println("Permiso: "+ permiso);
 		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		// Se buscan las opciones y secciones del menu generado por base de datos
+		List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		
+		// Se agrega el menu
+		CrearMenu crearMenu = new CrearMenu();
+		String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
 		model.addAttribute("menuCompleto", menuCompleto);
 		
 		//Se busca el tipo de documento
 		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Programa de Actividades");
 		
 		List<DocumentoConsulta> documentos = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
+		System.out.println("tipoDocumento" + tipoDocumento);
+		System.out.println("documentos" + documentos);
 		model.addAttribute("documentos", documentos);
 		
 		return "programa_actividades/programa_actividades";

@@ -11,4 +11,4 @@ public interface IPermisoService {
 	List<Permiso> buscarPorNumEmpleado(int numEmpleado);
 	Permiso buscarPorIdPermisoAndNumEmpleado(int idPermiso, int numEmpleado);
 	Permiso buscarPorNumEmpleadoAndMenu(int numEmpleado, Menu menu);
-}
+ }

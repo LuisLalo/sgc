@@ -71,4 +71,18 @@ public class MenuServiceJPA implements IMenuService{
 		List <Menu> lista = menuRepo.findByIdEstatusAndIdTipoVentanaOrderByOrden(idEstatus, idTipoVentana);
 		return lista;
 	}
+
+	@Override
+	public Menu buscarPorLiga(String liga) {
+		Menu menu = menuRepo.findByLiga(liga);
+		return menu;
+	}
+
+	@Override
+	public List<Menu> buscarPorIdTipoVentana(int idTipoVentana) {
+		List<Menu> lista = menuRepo.findByIdTipoVentanaOrderByOrden(idTipoVentana);
+		return lista;
+	}
+
+	
 }

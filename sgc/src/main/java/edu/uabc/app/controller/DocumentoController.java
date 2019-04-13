@@ -1,5 +1,6 @@
 package edu.uabc.app.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.uabc.app.util.CrearMenu;
+import edu.uabc.app.util.EnviarCorreo;
 import edu.uabc.app.util.Utileria;
 import edu.uabc.app.model.ClasificadorDocumento;
 import edu.uabc.app.model.Departamento;
@@ -34,6 +36,7 @@ import edu.uabc.app.model.DocumentoActualizar;
 import edu.uabc.app.model.DocumentoConsulta;
 import edu.uabc.app.model.LineaAutorizacion;
 import edu.uabc.app.model.Menu;
+import edu.uabc.app.model.Permiso;
 import edu.uabc.app.model.TipoArchivo;
 import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
@@ -45,6 +48,7 @@ import edu.uabc.app.service.IDocumentosActualizarService;
 import edu.uabc.app.service.IDocumentosConsultaService;
 import edu.uabc.app.service.ILineaAutorizacionService;
 import edu.uabc.app.service.IMenuService;
+import edu.uabc.app.service.IPermisoService;
 import edu.uabc.app.service.ITiposArchivosService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuarioDocumentoConsultaService;
@@ -88,27 +92,89 @@ public class DocumentoController {
 	@Autowired
 	private IMenuService serviceMenu;
 	
+	@Autowired
+	private IPermisoService servicePermiso;
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
-		//Se agrega el nombre del usuario
+		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
 		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		// Se buscan los permisos a los que puede acceder el usuario
+		List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+		System.out.println("Permiso: "+ permiso);
 		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		// Se buscan las opciones y secciones del menu generado por base de datos
+		List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		
+		// Se agrega el menu
+		CrearMenu crearMenu = new CrearMenu();
+		String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
 		model.addAttribute("menuCompleto", menuCompleto);
 		
 		//Lista de Tipos de Documentos
-		List<TipoDocumento> listaTipoDocumento = serviceTiposDocumentos.buscarTodas();
-		model.addAttribute("tipoDocumento", listaTipoDocumento);
+		List<TipoDocumento> listaTipoDocumento = new ArrayList<TipoDocumento>();
 		
 		//Lista de Clasificador de Documentos
-		List<ClasificadorDocumento> listaClasificadorDocumento = serviceClasificadorDocumentos.buscarTodas();
+		List<ClasificadorDocumento> listaClasificadorDocumento = new ArrayList<ClasificadorDocumento>();
+		
+		//Se identifica si el usuario es usuario tiene permisos de administrador o es usuario normal
+		if(usuarioAuth.getRol().getNombre().equals("SGC")) {
+			listaTipoDocumento = serviceTiposDocumentos.buscarTodas();
+			listaClasificadorDocumento = serviceClasificadorDocumentos.buscarTodas();
+			
+		} else {
+			List<TipoDocumento> listaTD = serviceTiposDocumentos.buscarTodas();
+			listaClasificadorDocumento = serviceClasificadorDocumentos.buscarTodas();
+			int contador = 0;
+			for(int cont=0;cont<listaTD.size();cont++) {
+				System.out.println("listaTD.get(cont).getNombre(): " + listaTD.get(cont).getNombre());
+				switch (listaTD.get(cont).getNombre()) {
+					case "Procedimientos":  listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Instructivos": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Formatos": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Documentos varios": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Análisis de Riesgo": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Análisis FODA": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Gestión del Conocimiento": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Acciones Correctivas": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Proyectos de Mejora": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Plan de Acción": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+					case "Indicadores": listaTipoDocumento.add(contador, listaTD.get(cont));
+					contador++;
+					break;
+				}
+			}
+			
+		}
+		
+		model.addAttribute("tipoDocumento", listaTipoDocumento);
 		model.addAttribute("clasificadorDocumento",  listaClasificadorDocumento);
+		
 		
 		return "documentos/listTiposDocumentos";
 		
@@ -132,9 +198,24 @@ public class DocumentoController {
 	
 	@GetMapping("/{id}")
 	public String mostrarDocumentos(@PathVariable("id") int idTipoDocumento, Model model, Authentication authentication) {
-		//Se agrega el nombre del usuario
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 		
 		//Se identifica si el usuario es usuario tiene permisos de administrador o es usuario normal
 		if(usuarioAuth.getRol().getNombre().equals("SGC")) {
@@ -150,20 +231,44 @@ public class DocumentoController {
 		}
 		else {
 			//Lista de documentos cargados por el usuario
-			List<UsuarioDocumentoConsulta> listaDocumento = serviceUsuarioDocumentoConsulta.buscarPorUsuario(usuarioAuth);
-			System.out.println("Usuario listaUsuarioDocumentoConsulta: " + listaDocumento);
+			UsuarioConsulta usuarioConsulta = serviceUsuariosConsulta.buscarPorId(usuarioAuth.getNum_empleado());
+			List<UsuarioDocumentoConsulta> listaDocumento = serviceUsuarioDocumentoConsulta.buscarPorUsuario(usuarioConsulta);
+			List<UsuarioDocumentoConsulta> listaD = new ArrayList<UsuarioDocumentoConsulta>();
 			
-			model.addAttribute("documentos", listaDocumento);
+			System.out.println("Usuario listaUsuarioDocumentoConsulta: " + listaDocumento);
+			int contador = 0;
+			for(int cont=0;cont<listaDocumento.size();cont++) {
+				if(listaDocumento.get(cont).getDocumento().getTipoDocumento().getIdTipoDocumento()==idTipoDocumento) {
+					listaD.add(contador, listaDocumento.get(cont));
+					contador++;
+				}
+			}
+			
+			model.addAttribute("documentos", listaD);
 			return "documentos/listDocumentos";
 		}
 	}
 	
 	@GetMapping("/nuevo")
 	public String mostrarNuevo(@ModelAttribute DocumentoActualizar documento, Authentication authentication, Model model) {
-		//Se agrega el nombre del usuario
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
-
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 		
 		//Se agregan la lista de los Tipos de Archivo
 		List<TipoArchivo> listaTipoArchivo = serviceTiposArchivos.buscarTodas();
@@ -185,9 +290,24 @@ public class DocumentoController {
 	
 	@GetMapping("/crear")
 	public String crear(@ModelAttribute DocumentoActualizar documento, Authentication authentication, Model model) {
-		//Se agrega el nombre del usuario
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 		
 		//Se agregan la lista de los Tipos de Archivo
 		List<TipoArchivo> listaTipoArchivo = serviceTiposArchivos.buscarTodas();
@@ -219,6 +339,20 @@ public class DocumentoController {
 			listaTipoDocumento.add(tipoDocumento);
 			tipoDocumento = serviceTiposDocumentos.buscarPorId(5);
 			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(6);
+			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(7);
+			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(8);
+			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(15);
+			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(16);
+			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(17);
+			listaTipoDocumento.add(tipoDocumento);
+			tipoDocumento = serviceTiposDocumentos.buscarPorId(18);
+			listaTipoDocumento.add(tipoDocumento);
 			model.addAttribute("tipo_documento", listaTipoDocumento);
 			return "documentos/formDocumentosNuevo";
 		}
@@ -226,7 +360,7 @@ public class DocumentoController {
 	}
 	
 	@PostMapping("/guardar")
-	public String guardar(@ModelAttribute DocumentoActualizar documento, Authentication authentication, BindingResult result, RedirectAttributes attribute, @RequestParam("ruta") MultipartFile multiPart, HttpServletRequest request) {
+	public String guardar(@ModelAttribute DocumentoActualizar documento, Authentication authentication, BindingResult result, RedirectAttributes attribute, @RequestParam("ruta") MultipartFile multiPart, HttpServletRequest request) throws IOException {
 		System.out.println("Documento: " + documento);
 		// Se identifica si hubo un error
 		if (result.hasErrors()) {
@@ -251,9 +385,9 @@ public class DocumentoController {
 		
 		// Se buscan los id de los tipos de documentos Procedimientos, Instructivos, Formatos y del manual del SGC que se van a guardar
 		int id_manualSGC = serviceTiposDocumentos.buscarPorNombre("Manual de Gestión SGC").getIdTipoDocumento();
-		int id_procedimiento = serviceTiposDocumentos.buscarPorNombre("Procedimiento").getIdTipoDocumento();
-		int id_instructivo = serviceTiposDocumentos.buscarPorNombre("Instructivo").getIdTipoDocumento();
-		int id_formato = serviceTiposDocumentos.buscarPorNombre("Formato").getIdTipoDocumento();
+		int id_procedimiento = serviceTiposDocumentos.buscarPorNombre("Procedimientos").getIdTipoDocumento();
+		int id_instructivo = serviceTiposDocumentos.buscarPorNombre("Instructivos").getIdTipoDocumento();
+		int id_formato = serviceTiposDocumentos.buscarPorNombre("Formatos").getIdTipoDocumento();
 		int id_analisisRiesgo = serviceTiposDocumentos.buscarPorNombre("Análisis de Riesgo").getIdTipoDocumento();
 		int id_analisisFoda = serviceTiposDocumentos.buscarPorNombre("Análisis FODA").getIdTipoDocumento();
 		
@@ -365,9 +499,24 @@ public class DocumentoController {
 	
 	@GetMapping(value="/editar/{id}")
 	public String editar(@PathVariable("id") int id_documento, Model model, Authentication authentication) {
-		//Se agrega el nombre del usuario
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 		
 		List<ClasificadorDocumento> listaClasificadorDocumento = serviceClasificadorDocumentos.buscarTodas();
 		model.addAttribute("clasificador_documento", listaClasificadorDocumento);
@@ -401,17 +550,24 @@ public class DocumentoController {
 	
 	@GetMapping(value="/autorizar")
 	public String documentosPorAutorizar(Authentication authentication, Model model) {
-		//Se agrega el nombre del usuario
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
-		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
-		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
-		model.addAttribute("menuCompleto", menuCompleto);
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 		
 		// Documentos a autorizar para el puesto de contador
 		if(usuarioAuth.getPuesto().getNombre().equals("Contador")) {
@@ -725,9 +881,24 @@ public class DocumentoController {
 	
 	@GetMapping(value="/autorizar/editar/{id}")
 	public String documentosAutorizarEditar(@PathVariable("id") int id_documento, Model model, Authentication authentication) {
-		//Se agrega el nombre del usuario
-		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
-		model.addAttribute("usuarioAuth", usuarioAuth);
+		// Se agrega el nombre del usuario
+				UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+				model.addAttribute("usuarioAuth", usuarioAuth);
+				System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
+				
+				// Se buscan los permisos a los que puede acceder el usuario
+				List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+				System.out.println("Permiso: "+ permiso);
+				
+				// Se buscan las opciones y secciones del menu generado por base de datos
+				List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+				List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+				List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+				
+				// Se agrega el menu
+				CrearMenu crearMenu = new CrearMenu();
+				String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
+				model.addAttribute("menuCompleto", menuCompleto);
 				
 		List<TipoArchivo> listaTipoArchivo = serviceTiposArchivos.buscarTodas();
 		model.addAttribute("tipo_archivo", listaTipoArchivo);
@@ -743,7 +914,7 @@ public class DocumentoController {
 	}
 	
 	@GetMapping(value="/autorizar/{id}")
-	public String documentosAutorizar(@PathVariable("id") int id_documento, RedirectAttributes attribute) {
+	public String documentosAutorizar(@PathVariable("id") int id_documento, RedirectAttributes attribute) throws Exception {
 		// Se identifica el documento que se va a autorizar
 		DocumentoActualizar documentoActualizar = serviceDocumentosActualizar.buscarPorId(id_documento);
 		List<LineaAutorizacion> listaLineaAutorizacion = serviceLineaAutorizacion.buscarPorDepartamento(documentoActualizar.getIdDepartamento());
@@ -764,6 +935,9 @@ public class DocumentoController {
 				// Se hace actualiza el estatus para que suba al siguiente nivel
 				documentoActualizar.setEstatus(estatus);
 				serviceDocumentosActualizar.insertar(documentoActualizar);
+				
+				EnviarCorreo.EnviarNotificacion();
+				
 			}
 			
 			attribute.addFlashAttribute("mensaje", "El registro fue aprobado");
@@ -779,17 +953,18 @@ public class DocumentoController {
 	public String documentosDevolver(@PathVariable("id") int id_documento, RedirectAttributes attribute) {
 		DocumentoActualizar documentoActualizar = serviceDocumentosActualizar.buscarPorId(id_documento);
 		List<LineaAutorizacion> listaLineaAutorizacion = serviceLineaAutorizacion.buscarPorDepartamento(documentoActualizar.getIdDepartamento());
-		/*
+		
+		// Se compara que el tamaño de la linea de autorización sea mayor al estatus del documento
 		if(listaLineaAutorizacion.size()>documentoActualizar.getEstatus()){
 			int estatus = documentoActualizar.getEstatus();
-			estatus++;
+			estatus--;
 			documentoActualizar.setEstatus(estatus);
 			serviceDocumentosActualizar.insertar(documentoActualizar);
-			attribute.addFlashAttribute("mensaje", "El registro fue aprobado");
+			attribute.addFlashAttribute("mensaje", "El documento fue devuelto");
 		}
 		else {
-			attribute.addFlashAttribute("mensaje", "Existieron errores");
-		}*/
+			//attribute.addFlashAttribute("mensaje", "Existieron errores");
+		}
 		return "redirect:/documentos/autorizar";
 	}
 	

@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.uabc.app.model.Departamento;
 import edu.uabc.app.model.DocumentoConsulta;
 import edu.uabc.app.model.Menu;
+import edu.uabc.app.model.Permiso;
 import edu.uabc.app.model.TipoDocumento;
 import edu.uabc.app.model.UsuarioConsulta;
 import edu.uabc.app.model.UsuarioDocumento;
 import edu.uabc.app.service.IDepartamentosService;
 import edu.uabc.app.service.IDocumentosConsultaService;
 import edu.uabc.app.service.IMenuService;
+import edu.uabc.app.service.IPermisoService;
 import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuarioDocumentoService;
 import edu.uabc.app.service.IUsuariosConsultaService;
@@ -43,7 +45,10 @@ public class TableroResultadoIndex {
 	@Autowired
 	private IMenuService serviceMenu;
 	
-	@GetMapping("/index")
+	@Autowired
+	private IPermisoService servicePermiso;
+	
+	//@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
@@ -65,16 +70,23 @@ public class TableroResultadoIndex {
 	
 	@GetMapping("/{id}")
 	public String mostrar(@PathVariable ("id") int idDepartamento, Model model, Authentication authentication) {
-		//Se agrega el nombre del usuario
+		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
+		System.out.println("numEmpleado antes del método: "+ usuarioAuth.getNum_empleado());
 		
-		// Se agrega el menu generado por base de datos
-		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
-		List<Menu> listaSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
-		List<Menu> listaSubSubMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		// Se buscan los permisos a los que puede acceder el usuario
+		List<Permiso> permiso = servicePermiso.buscarPorNumEmpleado(usuarioAuth.getNum_empleado());
+		System.out.println("Permiso: "+ permiso);
 		
-		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
+		// Se buscan las opciones y secciones del menu generado por base de datos
+		List<Menu> listaM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
+		List<Menu> listaSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 1);
+		List<Menu> listaSSM = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 2);
+		
+		// Se agrega el menu
+		CrearMenu crearMenu = new CrearMenu();
+		String menuCompleto = crearMenu.generarMenu(usuarioAuth.getNum_empleado(), permiso, listaM, listaSM, listaSSM);
 		model.addAttribute("menuCompleto", menuCompleto);
 				
 		Departamento departamento = serviceDepartamentos.buscarPorId(idDepartamento);
