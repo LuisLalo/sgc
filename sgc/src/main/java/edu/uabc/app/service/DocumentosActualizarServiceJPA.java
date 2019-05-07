@@ -18,7 +18,6 @@ public class DocumentosActualizarServiceJPA implements IDocumentosActualizarServ
 	@Override
 	public void insertar(DocumentoActualizar documentoActualizar) {
 		documentosActualizarRepo.save(documentoActualizar);
-		
 	}
 
 	@Override
