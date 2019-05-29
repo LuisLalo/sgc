@@ -405,13 +405,13 @@ public class DocumentoController {
 		int id_proyectosMejora = serviceTiposDocumentos.buscarPorNombre("Proyectos de Mejora").getIdTipoDocumento();
 		int id_planAccion = serviceTiposDocumentos.buscarPorNombre("Plan de Acción").getIdTipoDocumento();
 		int id_indicadores = serviceTiposDocumentos.buscarPorNombre("Indicadores").getIdTipoDocumento();
-		
+		int id_tableroResultados = serviceTiposDocumentos.buscarPorNombre("Tablero de Resultados").getIdTipoDocumento();
 		
 		// Se identifica que el documento sea del tipo procedimiento, instructivo o formato
 		if((documento.getIdTipoDocumento()==id_manualSGC)||(documento.getIdTipoDocumento()==id_procedimiento) ||(documento.getIdTipoDocumento()==id_instructivo)||(documento.getIdTipoDocumento()==id_formato)||(documento.getIdTipoDocumento()==id_analisisRiesgo)||(documento.getIdTipoDocumento()==id_analisisFoda)
 				||(documento.getIdTipoDocumento()==id_documentosVarios)||(documento.getIdTipoDocumento()==id_gestionConocimiento)||(documento.getIdTipoDocumento()==id_documentos_varios)||(documento.getIdTipoDocumento()==id_programaActividades)||(documento.getIdTipoDocumento()==id_reunionDirectiva)
 				||(documento.getIdTipoDocumento()==id_auditoriaInterna)||(documento.getIdTipoDocumento()==id_auditoriaExterna)||(documento.getIdTipoDocumento()==id_climaLaboral)||(documento.getIdTipoDocumento()==id_reunionesTrabajo)||(documento.getIdTipoDocumento()==id_accionesCorrectivas)
-				||(documento.getIdTipoDocumento()==id_proyectosMejora)||(documento.getIdTipoDocumento()==id_planAccion)||(documento.getIdTipoDocumento()==id_indicadores)) {
+				||(documento.getIdTipoDocumento()==id_proyectosMejora)||(documento.getIdTipoDocumento()==id_planAccion)||(documento.getIdTipoDocumento()==id_indicadores)||(documento.getIdTipoDocumento()==id_tableroResultados)) {
 			
 			// Se identifica si el usuario que guarda el documento es el administrador del SGC y realizó el guardado desde el formulario básico
 			if((usuarioAuth.getRol().getNombre().equals("SGC")) && (documento.getEstatus()==0)) {
@@ -487,13 +487,12 @@ public class DocumentoController {
 			attribute.addFlashAttribute("mensaje", "El registro fue guardado");
 		}
 		
-		
 		return "redirect:/documentos/index";
 	}
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 	}
 	
@@ -910,7 +909,137 @@ public class DocumentoController {
 		model.addAttribute("departamentos", listaDepartamento);
 		DocumentoActualizar documento = serviceDocumentosActualizar.buscarPorId(id_documento);
 		model.addAttribute("documentoActualizar", documento);
-		return "documentos/formDocumentosNuevo";
+		return "documentos/formDocumentosAutorizaNuevo";
+	}
+	
+	@PostMapping("/autorizar/editar/guardar")
+	public String guardarAutorizar(@ModelAttribute DocumentoActualizar documento, Authentication authentication, BindingResult result, RedirectAttributes attribute, @RequestParam("ruta") MultipartFile multiPart, HttpServletRequest request) throws IOException {
+		System.out.println("Documento: " + documento);
+		// Se identifica si hubo un error
+		if (result.hasErrors()) {
+			System.out.println(documento);
+			System.out.println("Existieron errores");
+			
+			return "documentos/formDocumentosNuevo";
+		}
+		
+		// Se busca la información del usuario que está guardando el documento
+		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
+		
+		// Se identifica el departamento del usuario que guarda el documento
+		Departamento departamento = serviceDepartamentos.buscarPorId(documento.getIdDepartamento());
+		
+		// Si el documento no trae id del departamento es porque lo guarda un usuario que solo guarda archivos de su departamento, se toma el id del departamento de los datos del usuario
+		if((departamento==null) || (departamento.getId_departamento()==0)) {
+			documento.setIdDepartamento(usuarioAuth.getDepartamento().getId_departamento());
+			departamento = serviceDepartamentos.buscarPorId(usuarioAuth.getDepartamento().getId_departamento());
+			System.out.println("usuario auth: " + usuarioAuth);
+		}
+		
+		// Se buscan los id de los tipos de documentos Procedimientos, Instructivos, Formatos y del manual del SGC que se van a guardar
+		int id_manualSGC = serviceTiposDocumentos.buscarPorNombre("Manual de Gestión SGC").getIdTipoDocumento();
+		int id_procedimiento = serviceTiposDocumentos.buscarPorNombre("Procedimientos").getIdTipoDocumento();
+		int id_instructivo = serviceTiposDocumentos.buscarPorNombre("Instructivos").getIdTipoDocumento();
+		int id_formato = serviceTiposDocumentos.buscarPorNombre("Formatos").getIdTipoDocumento();
+		int id_analisisRiesgo = serviceTiposDocumentos.buscarPorNombre("Análisis de Riesgo").getIdTipoDocumento();
+		int id_analisisFoda = serviceTiposDocumentos.buscarPorNombre("Análisis FODA").getIdTipoDocumento();
+		
+		// ** Documetos que se guardan al hacer el cambio en el procedimiento para guardar todos los archivos
+		int id_documentosVarios = serviceTiposDocumentos.buscarPorNombre("Documentos Varios").getIdTipoDocumento();
+		int id_gestionConocimiento = serviceTiposDocumentos.buscarPorNombre("Gestión del Conocimiento").getIdTipoDocumento();
+		int id_documentos_varios = serviceTiposDocumentos.buscarPorNombre("Documentos Varios").getIdTipoDocumento();
+		int id_programaActividades = serviceTiposDocumentos.buscarPorNombre("Programa de Actividades").getIdTipoDocumento();
+		int id_reunionDirectiva = serviceTiposDocumentos.buscarPorNombre("Reunión Directiva").getIdTipoDocumento();
+		int id_auditoriaInterna = serviceTiposDocumentos.buscarPorNombre("Resultados de Auditoría Interna").getIdTipoDocumento();
+		int id_auditoriaExterna = serviceTiposDocumentos.buscarPorNombre("Resultados de Auditoría Externa").getIdTipoDocumento();
+		int id_climaLaboral = serviceTiposDocumentos.buscarPorNombre("Encuesta Clima Laboral").getIdTipoDocumento();
+		int id_reunionesTrabajo = serviceTiposDocumentos.buscarPorNombre("Reuniones de Trabajo").getIdTipoDocumento();
+		int id_accionesCorrectivas = serviceTiposDocumentos.buscarPorNombre("Acciones Correctivas").getIdTipoDocumento();
+		int id_proyectosMejora = serviceTiposDocumentos.buscarPorNombre("Proyectos de Mejora").getIdTipoDocumento();
+		int id_planAccion = serviceTiposDocumentos.buscarPorNombre("Plan de Acción").getIdTipoDocumento();
+		int id_indicadores = serviceTiposDocumentos.buscarPorNombre("Indicadores").getIdTipoDocumento();
+		
+		// Se identifica que el documento sea del tipo procedimiento, instructivo o formato
+		if((documento.getIdTipoDocumento()==id_manualSGC)||(documento.getIdTipoDocumento()==id_procedimiento) ||(documento.getIdTipoDocumento()==id_instructivo)||(documento.getIdTipoDocumento()==id_formato)||(documento.getIdTipoDocumento()==id_analisisRiesgo)||(documento.getIdTipoDocumento()==id_analisisFoda)
+				||(documento.getIdTipoDocumento()==id_documentosVarios)||(documento.getIdTipoDocumento()==id_gestionConocimiento)||(documento.getIdTipoDocumento()==id_documentos_varios)||(documento.getIdTipoDocumento()==id_programaActividades)||(documento.getIdTipoDocumento()==id_reunionDirectiva)
+				||(documento.getIdTipoDocumento()==id_auditoriaInterna)||(documento.getIdTipoDocumento()==id_auditoriaExterna)||(documento.getIdTipoDocumento()==id_climaLaboral)||(documento.getIdTipoDocumento()==id_reunionesTrabajo)||(documento.getIdTipoDocumento()==id_accionesCorrectivas)
+				||(documento.getIdTipoDocumento()==id_proyectosMejora)||(documento.getIdTipoDocumento()==id_planAccion)||(documento.getIdTipoDocumento()==id_indicadores)) {
+			
+			// Se identifica si el usuario que guarda el documento es el administrador del SGC y realizó el guardado desde el formulario básico
+			if((usuarioAuth.getRol().getNombre().equals("SGC")) && (documento.getEstatus()==0)) {
+				// //Se agrega el estatus para que inicie la linea de autorización
+				System.out.println("Documento SGC: " + documento);
+				documento.setEstatus(1);
+				System.out.println("Documento SGC: " + documento);
+			}
+			if((usuarioAuth.getRol().getNombre().equals("SGC")) && (documento.getEstatus()==100)) {
+				// Si el administrador autorizó el documento de forma directa, se publicará de forma inmediata después de guardarse
+				System.out.println("Documento SGC: " + documento);
+			}
+			else {
+				// El usuario no es el administrador del SGC
+				
+				//Se agrega el estatus para que inicie la linea de autorización
+				System.out.println("Documento: " + documento);
+				documento.setEstatus(1);
+				System.out.println("Documento: " + documento);
+				//Se agrega el departamento correspondiente
+				documento.setIdDepartamento(usuarioAuth.getDepartamento().getId_departamento());
+			}
+			
+			// Se identifica el tipo de documento
+			String tipoDocumento = serviceTiposDocumentos.buscarPorId(documento.getIdTipoDocumento()).getRuta();
+			
+			// Se identifica la extensión del archivo que se va a guardar
+			String extension = Utileria.agregarExtensionArchivos(multiPart);
+			List<TipoArchivo> listaTipoArchivo = serviceTiposArchivos.buscarTodas();
+			int id_tipo_archivo = Utileria.identificarExtensionArchivos(extension, listaTipoArchivo);
+			extension = extension.toLowerCase();
+			System.out.println("Extension: " + extension);
+			documento.setIdTipoArchivo(id_tipo_archivo);
+			
+			// Se guarda el archivo en el directorio del disco duro
+			if(!multiPart.isEmpty()) {
+				String nombreDocumento = Utileria.guardarDocumento(multiPart, request, tipoDocumento, departamento.getRuta(), extension);
+				documento.setRuta(nombreDocumento);
+			}
+			
+			// Se insertan los datos del documento en la base de datos
+			System.out.println("Documento guardado: " + documento);
+			serviceDocumentosActualizar.insertar(documento);
+			
+			// Se insertan los valores a la tabla usuario_documento
+			// Se obtiene el id del último documento guardado en la base de datos
+			int idUltimoDocumento = serviceDocumentosConsulta.buscarPrimeroPorIdDocumentoOrdenadoDesc().getIdDocumento();
+			
+			// Se obtiene el id del último registro en la tabla usuario_documento, se utiliza el modelo UsuarioDocumento
+			UsuarioDocumento ultimoUsuarioDocumento = serviceUsuarioDocumento.buscarPrimeroPorIdUsuarioDocumentoOrdenadosDesc();
+			
+			int idUltimoUsuarioDocumento;
+			
+			// Se verifica que el valor no sea null
+			if((ultimoUsuarioDocumento!=null)){
+				// Se toma el valor que tiene el id del último registro de la tabla usuario_documento y se aumenta
+				idUltimoUsuarioDocumento = serviceUsuarioDocumento.buscarPrimeroPorIdUsuarioDocumentoOrdenadosDesc().getIdUsuarioDocumento();
+				idUltimoUsuarioDocumento++;
+			}
+			else {
+				// Se inicia con el valor 1
+				idUltimoUsuarioDocumento=1;
+			}
+			// Se agregan los campos que se requieren para la inserción
+			UsuarioDocumento usuarioDocumento = new UsuarioDocumento();
+			usuarioDocumento.setIdUsuarioDocumento(idUltimoUsuarioDocumento);
+			usuarioDocumento.setNumEmpleado(usuarioAuth.getNum_empleado());
+			usuarioDocumento.setIdDocumento(idUltimoDocumento);
+			System.out.println("Resultado Usuario Documento: " + usuarioDocumento);
+			// Se realiza la inserción a la tabla
+			serviceUsuarioDocumento.insertar(usuarioDocumento);
+			
+			attribute.addFlashAttribute("mensaje", "El registro fue guardado");
+		}
+		
+		return "redirect:/documentos/autorizar";
 	}
 	
 	@GetMapping(value="/autorizar/{id}")

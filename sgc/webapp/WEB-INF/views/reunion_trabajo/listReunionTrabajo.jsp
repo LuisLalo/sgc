@@ -27,6 +27,7 @@
 
 	<div class="container">
 		<h3 class="text-center font-weight-bold">Reuniones de Trabajo</h3>
+		<br>
 		<div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
             <tr>

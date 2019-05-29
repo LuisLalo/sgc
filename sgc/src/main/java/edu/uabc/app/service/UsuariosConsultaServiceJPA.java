@@ -33,7 +33,7 @@ public class UsuariosConsultaServiceJPA implements IUsuariosConsultaService {
 
 	@Override
 	public void eliminar(int num_empleado) {
-		// TODO Auto-generated method stub
+		usuariosRepo.deleteById(num_empleado);
 		
 	}
 

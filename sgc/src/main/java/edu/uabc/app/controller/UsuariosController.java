@@ -1,8 +1,5 @@
 package edu.uabc.app.controller;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +74,7 @@ public class UsuariosController {
 	private IPermisoActualizarService servicePermisoActualizar;
 	
 	@GetMapping("/indexPaginate")
-	public String mostrarIndexPaginado(Authentication authentication, Model model, Pageable page) throws Exception {
+	public String mostrarIndexPaginado(Authentication authentication, Model model, Pageable page) {
 		Page<UsuarioConsulta> lista = serviceUsuariosConsulta.buscarTodas(page);
 		System.out.println("Lista de usuarios: " + lista);
 		model.addAttribute("usuarios", lista);

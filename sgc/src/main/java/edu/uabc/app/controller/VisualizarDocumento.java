@@ -2,6 +2,7 @@ package edu.uabc.app.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -79,6 +80,8 @@ public class VisualizarDocumento {
 		TipoDocumento tipoDocumento = new TipoDocumento();
 		
 		for(int cont=0;cont<listaTotal.size();cont++) {
+			String sinAcentos = StringUtils.stripAccents(listaTotal.get(cont).getNombre());
+			listaTotal.get(cont).setNombre(sinAcentos);
 			System.out.println("nombre: " + nombre);
 			System.out.println("listaTotal.get(cont).getNombre().toLowerCase()): " + listaTotal.get(cont).getNombre().toLowerCase().replaceAll(" ", "_"));
 			if(nombre.equals(listaTotal.get(cont).getNombre().toLowerCase().replaceAll(" ", "_"))){
@@ -174,6 +177,8 @@ public class VisualizarDocumento {
 		TipoDocumento tipoDocumento = new TipoDocumento();
 		
 		for(int cont=0;cont<listaTotal.size();cont++) {
+			String sinAcentos = StringUtils.stripAccents(listaTotal.get(cont).getNombre());
+			listaTotal.get(cont).setNombre(sinAcentos);
 			if(nombre.equals(listaTotal.get(cont).getNombre().toLowerCase().replaceAll(" ", "_"))){
 				tipoDocumento = serviceTiposDocumentos.buscarPorNombre(listaTotal.get(cont).getNombre());
 			}

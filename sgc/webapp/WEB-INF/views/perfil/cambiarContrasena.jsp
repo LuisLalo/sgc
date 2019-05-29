@@ -30,23 +30,32 @@
 			<h6 class="text-center">Departamento: ${ usuarioAuth.departamento.nombre }</h6>
 			<h6 class="text-center">Puesto: ${ usuarioAuth.puesto.nombre }</h6>
 		<br>
-				
-		<form:form action="${ urlForm }" method="post" enctype="multipart/form-data" modelAttribute="usuarioActualizar">
-            <div class="form-group">
-              <form:hidden class="form-control" path="num_empleado" id="num_empleado" required="required" />
-              <form:hidden class="form-control" path="nombres" id="nombres" required="required" />
-              <form:hidden class="form-control" path="apellidos" id="apellidos" required="required" />
-              <form:hidden class="form-control" path="correo" id="correo" required="required" />
-              <form:hidden class="form-control" path="id_puesto" id="puesto" required="required" />
-              <form:hidden class="form-control" path="id_departamento" id="departamento" required="required" />
-              <form:hidden class="form-control" path="id_rol" id="rol" required="required" />
-              <form:hidden class="form-control" path="estatus" id="estatus" required="required" />  
 		
-              <label for="contrasena">Ingrese su contraseña actual:</label>
-              <form:input type="password" class="form-control" path="contrasena" id="contrasena" required="required" />
+		<c:if test="${ mensaje!=null }">
+      <div class="alert alert-danger" role="alert">${ mensaje }</div>
+      </c:if>
+		
+		<form:form action="${ urlForm }" method="post" enctype="multipart/form-data" modelAttribute="cambiarContrasena">
+            <div class="row justify-content-center">
+          		<div class="col-sm-4">
+            		<div class="form-group">
+              			<label for="contrasena actual">Ingrese su contraseña actual:</label>
+              			<form:input type="password" class="form-control" path="contrasenaActual" id="contrasenaActual" required="required" />
+              		</div>
+              </div>
             </div>
-        <button type="submit" class="btn btn-success" >Continuar</button>
-        <a href="${ urlRoot }perfil/index" class="btn btn-danger" role="button" title="Cancelar" >Cancelar</a><br><br>
+            <div class="row justify-content-center">
+            	<div class="col-sm-4">
+            		<div class="form-group">
+              			<label for="contrasena actual">Confirme su contraseña:</label>
+              			<form:input type="password" class="form-control" path="confirmarContrasena" id="confirmarContrasena" required="required" />
+              		</div>
+              	</div>
+            </div>
+            
+        		<button type="submit" class="btn btn-success" >Continuar</button>
+		        <a href="${ urlRoot }perfil/index" class="btn btn-danger" role="button" title="Cancelar" >Cancelar</a><br><br>
+		    
       </form:form> 
 		
 	</div>

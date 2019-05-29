@@ -25,7 +25,7 @@ import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
 @Controller
-@RequestMapping("/programa_de_actividades")
+@RequestMapping("/programa_actividades")
 public class ProgramaActividadesController {
 
 	@Autowired

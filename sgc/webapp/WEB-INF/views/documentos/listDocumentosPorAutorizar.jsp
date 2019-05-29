@@ -66,6 +66,7 @@
                 <td>
                     <a href="${ urlAutorizar }/editar/${documentos.idDocumento}" class="btn btn-success btn-sm" role="button" title="Editar" ><span class="glyphicon glyphicon-pencil"></span></a>
                     <a href="${ urlAutorizar }/${documentos.idDocumento}" onclick='return confirm("¿Estás seguro que deseas aprobar este documento?")' class="btn btn-success btn-sm" role="button" title="Aprobar" ><span class="glyphicon glyphicon-ok"></span></a>
+                    <a href="${ urlResources }${ documentos.ruta }" class="btn btn-success btn-sm" role="button" title="Visualizar Documento" ><span class="glyphicon glyphicon-save-file"></span></a>
                     <a href="${ urlDevolver }/${documentos.idDocumento}" onclick='return confirm("¿Estás seguro que deseas devolver este documento?")' class="btn btn-danger btn-sm" role="button" title="Devolver" ><span class="glyphicon glyphicon-repeat"></span></a>
                     <a href="${ urlEliminar }/${documentos.idDocumento}" onclick='return confirm("¿Estás seguro que deseas eliminar este documento?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
                 </td>

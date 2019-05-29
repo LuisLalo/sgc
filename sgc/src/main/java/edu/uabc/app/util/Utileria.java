@@ -33,8 +33,8 @@ public class Utileria {
 		// Obtenemos la ruta ABSOLUTA del directorio images
 		// Apache-tomcat/webapps/sgc/resources/docs/
 		String rutaFinal = request.getServletContext().getRealPath("/resources/docs/"+tipoDocumento+"/"+departamento+"/");
-		Log log = new Log();
-		log.write(rutaFinal);
+	//Log log = new Log();
+	//	log.write(rutaFinal);
 		//String rutaFinal = "/home/administrator/docs/";
 		//String rutaFinal = "C:/spring-workspace/sgc/webapp/resources/docs/"+tipoDocumento+"/"+departamento+"/";
 		System.out.println("Ruta final: " + rutaFinal);
@@ -46,7 +46,7 @@ public class Utileria {
 			System.out.println(imageFile.getAbsolutePath());
 			// Aquì se guarda fìsicamente el archivo en el disco duro
 			multiPart.transferTo(imageFile);
-			return nombreArchivo;
+			return "/docs"+"/"+tipoDocumento+"/"+departamento+"/"+nombreArchivo;
 		} catch (IOException e) {
 			System.out.println("Error " + e.getMessage());
 			return null;

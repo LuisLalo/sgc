@@ -23,27 +23,33 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
+		<c:if test="${ mensaje!=null }">
+     		<div class="alert alert-success" role="alert">${ mensaje }</div>
+      	</c:if>
 		<div class="row">
+      			
 			<div class="col-4">
 				<p class="text-center">
 					<img alt="Rectoría" src="${ urlResources }/images/person-green.png" width="150" height="150">
 				</p>
-				<p class="text-center">${ usuarioAuth.nombres } ${ usuarioAuth.apellidos }<br />
-				${ usuarioAuth.correo }</p>
+				<p class="text-center">
 				<a href="${ urlRoot }perfil/cambiar_contrasena" class="btn btn-outline-success" role="button" title="Cambiar Contraseña" >Cambiar Contraseña</a><br><br>
 				
 				<br>
+				<!-- 
 				<h5 class="text-center">Archivos Recientes:</h5>
 				<p class="text-center">GC-N2-001</p>
 				<p class="text-center">GC-N4-005</p>
-				<p class="text-center">Encuesta Clima Laboral</p>
+				<p class="text-center">Encuesta Clima Laboral--></p> 
 			</div>
 			<div class="col-8">
 				<br><br>
 				<h4 class="text-center">${ usuarioAuth.nombres } ${ usuarioAuth.apellidos }</h4>
+				<h6 class="text-center">${ usuarioAuth.correo }</h6>
 				<h6 class="text-center">${ usuarioAuth.departamento.nombre }</h6>
 				<h6 class="text-center">${ usuarioAuth.puesto.nombre }</h6>
 				<br>
+				
 				<h5 class="text-center">Capacitaciones Recibidas:</h5>
 				<h6 class="text-center">Curso Auditor Interno ISO 9001:2015</h6>
 				<h6 class="text-center">ATR Introducción al ISO 9001:2015 Análisis y Riesgos, Planeación</h6>

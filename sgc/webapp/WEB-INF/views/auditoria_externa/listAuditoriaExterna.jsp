@@ -26,8 +26,8 @@
 	<jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<div class="container">
-		<h3 class="text-center font-weight-bold">Auditoria Externa</h3>
-		
+		<h3 class="text-center font-weight-bold">Resultados de Auditoria Externa</h3>
+		<br>
 		<div class="table-responsive">
         <table class="table table-hover table-striped table-bordered">
             <tr>

@@ -40,7 +40,7 @@
                 <td>${ documentos.nombre }</td>
                 <td>${ documentos.descripcion }</td>
                 <td>
-                    <a href="${ urlResources }/docs/${tipoDocumento.ruta}/${ departamentos.ruta }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+                    <a href="${ urlResources }/${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
 				</td>
 			</tr>                  
             </c:forEach>

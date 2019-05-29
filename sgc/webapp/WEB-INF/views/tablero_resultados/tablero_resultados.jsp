@@ -12,11 +12,12 @@
 
 <spring:url value="/resources" var="urlResources"></spring:url>
 <spring:url value="/" var="urlRoot"></spring:url>
-<link href="${ urlResources }/bootstrap/css/mdb.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${ urlResources }/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/sgc/resources/css/bootstrap-4-navbar.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link href="${ urlResources }/bootstrap/css/theme.css" rel="stylesheet">
+
+<!--  Linea para agregar los íconos de las acciones-->
+<link rel="stylesheet" href="${ urlResources }/bootstrap3.7/css/glyphicons.css">
 
 <style>
 .contenedor {
@@ -43,42 +44,28 @@
 <body>
 	
 	<jsp:include page="../includes/header.jsp"></jsp:include>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$(document).on('mouseenter', '.contenedor', function() {
-				$(this).find(":button").show();
-
-			}).on('mouseleave', '.contenedor', function() {
-				$(this).find(":button").hide();
-
-			});
-		});
-	</script>
-	
 	<div class="container">
-		<h2 class="text-center font-weight-bold">Tablero de Resultados</h2>
+		<h3 class="text-center font-weight-bold">Tablero de Resultados</h3>
+		
 		<br>
-		
-		<div class="row">
-			<c:forEach var="departamentos" items="${departamentos}">
-				<div class="col-xs-12 col-sm-6 col-md-3">
-				<div class="contenedor">
-					<div class="view overlay">
-					  <a href="${ urlRoot }tablero_resultados/${departamentos.id_departamento}">
-						<img src="${ urlResources }/images/${departamentos.imagen}" alt="..."  class="img-fluid img-rounded" onmouseover="enfoque(this)"onmouseout="noenfoque(this)">
-						<div class="mask flex-center waves-effect waves-light rgba-white-strong">
-							<form method="get" action="${ urlRoot }tablero_resultados/${ documentos.departamento.ruta }/${departamentos.id_departamento}">
-								
-							</form>
-						</div>
-					  </a>
-					</div>
-				</div>
-			</div>
-			</c:forEach>
-		</div>
-		
+		<div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered">
+            <tr>
+                <th>Nombre del Documento</th>
+                <th>Descripción</th>
+                <th>Opciones</th>
+            </tr>
+            <c:forEach var="documentos" items="${ documentos }">
+            <tr>
+                <td>${ documentos.nombre }</td>
+                <td>${ documentos.descripcion }</td>
+                <td>
+                    <a href="${ urlResources }${documentos.ruta}" class="btn btn-success btn-sm" role="button" title="Descargar" ><span class="glyphicon glyphicon-download-alt"></span></a>
+				</td>
+			</tr>                  
+            </c:forEach>
+        </table>
+      </div>
 	</div>
 	<jsp:include page="..//includes/footer.jsp"></jsp:include>
 	

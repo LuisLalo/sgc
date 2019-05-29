@@ -48,7 +48,7 @@ public class TableroResultadoIndex {
 	@Autowired
 	private IPermisoService servicePermiso;
 	
-	//@GetMapping("/index")
+	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
@@ -62,8 +62,18 @@ public class TableroResultadoIndex {
 		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
 		model.addAttribute("menuCompleto", menuCompleto);
 		
-		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
-		model.addAttribute("departamentos", listaDepartamento);
+		// Se busca el tipo de documento 
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Tablero de resultados");
+		System.out.println(tipoDocumento);
+		
+		// Se busca el departamento que subió el documento
+		Departamento departamento = serviceDepartamentos.buscarPorNombre("Seguimiento y Evaluación");
+		System.out.println(departamento);
+		
+		// Se busca el listado de documentos que cumplen con el criterio
+		List<DocumentoConsulta> listaDocumento = serviceDocumentosConsulta.buscarPorEstatusAndDepartamentoAndTipoDocumentoOrdenadoPorOrdenDocumento(100, departamento, tipoDocumento);
+		model.addAttribute("documentos", listaDocumento);
+		System.out.println(listaDocumento);
 				
 		return "tablero_resultados/tablero_resultados";
 	}
