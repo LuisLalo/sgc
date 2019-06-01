@@ -33,7 +33,7 @@
 			<h4>
 				<li>Son compromisos del Patronato:</li>
 				<ul>
-					<li>Administrar, gestionar y vigilar objetivamente los recursos para apoyar las necesidades de la Universidad de manera económica, eficaz, eficiente y oportuna, buscando <span class="text-danger">en todo momento</span> la innovación de los procesos, <span class="text-danger">cumpliendo con la</span> normatividad aplicable <span class="text-danger">y el cuidado al medio ambiente</span>.</li>
+					<li>Administrar, gestionar y vigilar objetivamente los recursos para apoyar las necesidades de la Universidad de manera económica, eficaz, eficiente y oportuna, buscando en todo momento la innovación de los procesos, cumpliendo con la normatividad aplicable y<span class="text-danger"> coadyuvando con la responsabilidad social de la Institución</span>.</li>
 
 					<li>Rendir cuentas con calidad y transparencia a la comunidad universitaria y a la sociedad en general sobre la gestión y administración del Patrimonio Universitario.</li>
 				</ul>
@@ -53,12 +53,12 @@
 				<li>Mantener un Sistema de Gestión de Calidad basado en la mejora continua de nuestros sistemas, procesos y servicios.</li>
 				<li>Cumplir con la normatividad aplicable.</li>
 				<li>Capacitar constantemente a nuestro personal.</li>
-				<li>Coadyuvar con el cuidado al medio ambiente.</li>
+				<span class="text-danger"><li>Coadyuvar con la responsabilidad social de la institución.</li></span>
 			</ol>
 		</h4>
 		</div>
 		
-	<blockquote class="blockquote text-right">Rev. 11 Jul 17</blockquote>	
+	<blockquote class="blockquote text-right">Rev. 12 Ene 2019</blockquote>	
 	</div>
 	<jsp:include page="../includes/footer.jsp"></jsp:include>
 	

@@ -19,7 +19,7 @@ public class EnviarCorreo {
 		int port = 587;
 		String from = "dai@uabc.edu.mx";
 		String password = "Oov@ie4f";
-		String to = "andres.barraza@uabc.edu.mx";
+		String to = "luis.eduardo.chavez.escudero@uabc.edu.mx";
 		Properties properties = System.getProperties();
 		properties.put("mail.smtp.host", host);
 		properties.put("mail.smtp.port", port);

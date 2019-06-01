@@ -22,10 +22,10 @@ import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
-//@Controller
-//@RequestMapping("/plan_accion")
+@Controller
+@RequestMapping("/plan_de_accion")
 public class PlanAccionController {
-/*
+
 	@Autowired
 	private IUsuariosConsultaService serviceUsuariosConsulta;
 	
@@ -55,10 +55,13 @@ public class PlanAccionController {
 		String menuCompleto = CrearMenu.menu(listaMenu, listaSubMenu, listaSubSubMenu);
 		model.addAttribute("menuCompleto", menuCompleto);
 				
-		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
-		model.addAttribute("departamentos", listaDepartamento);
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Plan de Acción");
 		
-		return "plan_accion/listPlanAccion";
+		List<DocumentoConsulta>listaPlanAccion = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
+		System.out.println("Accion correctiva: " + listaPlanAccion);
+		model.addAttribute("documentos", listaPlanAccion);
+		
+		return "plan_accion/listPlanAccionDepartamentos";
 	}
 	
 	@GetMapping("/{id}")
@@ -75,5 +78,5 @@ public class PlanAccionController {
 		model.addAttribute("documentos", listaDocumento);
 		
 		return "/plan_accion/listPlanAccionDepartamentos";
-	}*/
+	}
 }

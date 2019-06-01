@@ -51,8 +51,8 @@ import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
-//@Controller
-//@RequestMapping("/accion_correctiva")
+@Controller
+@RequestMapping("/acciones_correctivas")
 public class AccionCorrectivaController {
 
 	@Autowired
@@ -96,16 +96,18 @@ public class AccionCorrectivaController {
 	
 	@Autowired
 	private IMenuService serviceMenu;
-	/*
+	
 	@GetMapping("/index")
 	public String mostrarIndex(Model model, Authentication authentication) {
 		// Se agrega el nombre del usuario
 		UsuarioConsulta usuarioAuth = serviceUsuariosConsulta.buscarPorCorreo(authentication.getName());
 		model.addAttribute("usuarioAuth", usuarioAuth);
 		
-		List<AccionCorrectiva>listaAccionCorrectiva = serviceAccionesCorrectivas.buscarTodas();
+		TipoDocumento tipoDocumento = serviceTiposDocumentos.buscarPorNombre("Acciones Correctivas");
+		
+		List<DocumentoConsulta>listaAccionCorrectiva = serviceDocumentosConsulta.buscarPorTipoDocumento(tipoDocumento);
 		System.out.println("Accion correctiva: " + listaAccionCorrectiva);
-		model.addAttribute("accionCorrectiva", listaAccionCorrectiva);
+		model.addAttribute("documentos", listaAccionCorrectiva);
 		
 		// Se agrega el menu generado por base de datos
 		List<Menu> listaMenu = serviceMenu.buscarPorEstatusAndIdTipoVentanaOrderByOrden(1, 0);
@@ -118,7 +120,7 @@ public class AccionCorrectivaController {
 		List<Departamento> listaDepartamento = serviceDepartamentos.buscarTodas();
 		model.addAttribute("departamentos", listaDepartamento);
 		
-		return "accion_correctiva/listAccionCorrectiva";
+		return "accion_correctiva/listAccionCorrectivaDepartamentos";
 	}
 	
 	@GetMapping("/crear")
@@ -267,5 +269,5 @@ public class AccionCorrectivaController {
 		System.out.println("Departamento:" + departamento);
 		System.out.println("Tipos documento:" + tipoDocumento);
 		return "/accion_correctiva/listAccionCorrectivaDepartamentos";
-	}*/
+	}
 }

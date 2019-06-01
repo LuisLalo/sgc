@@ -24,9 +24,9 @@ import edu.uabc.app.service.ITiposDocumentosService;
 import edu.uabc.app.service.IUsuariosConsultaService;
 import edu.uabc.app.util.CrearMenu;
 
-@Controller
-@RequestMapping("/programa_actividades")
-public class ProgramaActividadesController {
+//@Controller
+//@RequestMapping("/programa_actividades")
+/*public class ProgramaActividadesController {
 
 	@Autowired
 	private IDepartamentosService serviceDepartamentos;
@@ -157,4 +157,4 @@ public class ProgramaActividadesController {
 		
 		return "programa_actividades/listProgramaActividadesDepartamento";
 	}
-}
+}*/
